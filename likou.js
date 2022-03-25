@@ -25,11 +25,12 @@ var tree = {
     }
   }
 };
-let value = [];
+
 //二叉树深度
 var maxDepth = function (root) {
   return root ? Math.max(maxDepth(root.left), maxDepth(root.right)) + 1 : 0;
 };
+
 //验证二叉树深度 正序便利
 function isPass(node, valueArr = []) {
   if (!node.val) return;
@@ -38,6 +39,7 @@ function isPass(node, valueArr = []) {
   if (node.right) isPass(node.right, valueArr);
   return valueArr;
 }
+
 var isValidBST = function (root) {
   let arr = isPass(root);
   for (let i = 1; i < arr.length; i++) {
@@ -46,6 +48,7 @@ var isValidBST = function (root) {
   }
   return true;
 };
+
 //验证对称二叉树深度 （很有用）
 var isSymmetric = root => {
   if (!root) return;
@@ -63,14 +66,14 @@ var isSymmetric = root => {
 //最大子序和 (贪心算法)
 var nums = [-2, -1, -3, 3, -1, -2, -1, -5, -4];
 var maxSubArray = function (nums) {
-  let result = -Infinity;
   let count = 0;
-  for (let i = 0; i < nums.length; i++) {
-    count += nums[i];
-    result = Math.max(count, result);
-    if (count < 0) count = 0; //重新修正
+  let res = -Infinity;
+  for (let i of nums) {
+    count += i;
+    res = Math.max(count, res);
+    if (count < 0) count = 0;
   }
-  return result;
+  return res;
 };
 
 //均分三份的数组 (贪心算法)
@@ -87,33 +90,32 @@ var canThreePartsEqualSum = function (arr) {
   }
   return len <= 0;
 };
+
 //股票购买时机 (贪心算法)
-let nums1 = [7, 1, 5, 3, 6, 4];
 var maxProfitdp = function (prices) {
-  let base = prices[0];
-  let num = 0;
-  let i = 0;
-  while (prices.length > i) {
-    base = Math.min(prices[i], base);
-    num = Math.max(num, prices[i] - base);
-    i++;
+  let res = prices[0];
+  let num = -Infinity;
+  for (let i of prices) {
+    res = Math.min(res, i);
+    num = Math.max(num, i - res);
   }
   return num;
 };
+
 //最长递增子序列 (指针、贪心)
 var lengthOfLIS = function (nums) {
   if (!nums || !nums.length) return 0;
-  let stack = [nums[0]];
+  let res = [nums[0]];
   for (let i of nums) {
-    if (i > stack[stack.length - 1]) {
-      stack.push(i);
+    if (i > res[res.length - 1]) {
+      res.push(i);
     } else {
-      stack[stack.findIndex(n => n >= i)] = i;
+      res[res.findIndex(s => s >= i)] = i;
     }
   }
-  return stack.length;
+  return res;
 };
-console.log(lengthOfLIS([10, 9, 2, 5, 3, 7, 101, 18]));
+
 // 经典哈希表
 var removeElement = function (nums) {
   const target = {};
@@ -131,17 +133,21 @@ var removeElement = function (nums) {
 
 //最大连续子序 (经典贪心算法)
 var findLengthOfLCIS = function (nums) {
-  let max = 1;
-  let idx = 1;
-  for (let i = 1; i < nums.length; i++) {
-    if (nums[i] > nums[i - 1]) {
-      idx++;
+  let res = 0;
+  let num = -Infinity;
+  let symbol = 0;
+  for (let i of nums) {
+    debugger;
+    if (i > num) {
+      num = i;
+      res++;
     } else {
-      idx = 1;
+      num = -Infinity;
+      res = 0;
     }
-    max = Math.max(idx, max);
+    symbol = Math.max(symbol, res);
   }
-  return max;
+  return symbol;
 };
 
 //Boyer-Moore 投票算法(保证有这个数出现次数大于length/2)
@@ -209,4 +215,21 @@ var balancedStringSplit = function (s) {
     }
   }
   return ans;
+};
+
+//最长不重复字符串
+var calStr = str => {
+  let res = "";
+  let num = 0;
+  let i = 0;
+  while (i < str.length) {
+    num = Math.max(res.length, num);
+    if (res.includes(str[i])) {
+      res = res.slice(1);
+    } else {
+      res += str[i];
+      i++;
+    }
+  }
+  return { num, res };
 };
