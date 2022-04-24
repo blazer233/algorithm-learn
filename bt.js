@@ -25,6 +25,45 @@ var tree = {
     }
   }
 };
+const binaryTreePathsBt = tree => {
+  let stack = [[tree, tree.val]];
+  let res = [];
+  while (stack.length) {
+    let [node, path] = stack.shift();
+    if (!node.left && !node.right) {
+      res.push(path);
+    } else {
+      if (node.left) {
+        stack.push([node.left, `${path}->${node.left.val}`]);
+      }
+      if (node.right) {
+        stack.push([node.right, `${path}->${node.right.val}`]);
+      }
+    }
+  }
+  return res;
+};
+//满足条件所有路径和
+const pathSumBt = (root, target) => {
+  if (root == null) return [];
+  let stack = [[root, root.val, [root.val]]];
+  let res = []
+  while (stack.length) {
+    let [node, val, path] = stack.shift();
+    if (!node.left && !node.right && val == target) {
+      res.push(path)
+    } else {
+      if (node.left) {
+        stack.push([node.left, node.left.val + val, [...path, node.left.val]]);
+      }
+      if (node.right) {
+        stack.push([node.right, node.right.val + val, [...path, node.right.val]]);
+      }
+    }
+  }
+  return res
+};
+console.log(binaryTreePathsBt(tree));
 
 const dfs = (tree, value = []) => {
   if (!tree.val) return;
@@ -58,12 +97,14 @@ const levelOrder = tree => {
 var maxDepth = function (root) {
   let res = 0;
   let stack = [];
+  let resList = [];
   if (root) stack.push(root);
   while (stack.length) {
     res++;
     let len = stack.length;
     for (let i = 0; i < len; i++) {
-      let node = stack.shift();
+      let node = stack.pop();
+      resList.push(node.val);
       if (node.left) {
         stack.push(node.left);
       }
@@ -72,7 +113,7 @@ var maxDepth = function (root) {
       }
     }
   }
-  return res;
+  return { res, resList };
 };
 
 //bfs 二叉树深度（小）
@@ -111,34 +152,3 @@ var invertTree = function (root) {
   }
   return root;
 };
-
-//bfs 所有路径
-/**
- * 我们维护一个队列，存储节点以及根到该节点的路径。一开始这个队列里只有根节点。
- * 在每一步迭代中，我们取出队列中的首节点，如果它是叶子节点，则将它对应的路径加入到答案中。
- * 如果它不是叶子节点，则将它的所有孩子节点加入到队列的末尾。当队列为空时广度优先搜索结束，我们即能得到答案。
- */
-var binaryTreePaths = function (root) {
-  if (!root) return root;
-  let stack = [root];
-  let paths = [root.val];
-  let res = [];
-  while (stack.length) {
-    let node = stack.shift();
-    let path = paths.shift();
-    if (!node.left && !node.right) {
-      res.push(path);
-    } else {
-      if (node.left) {
-        stack.push(node.left);
-        paths.push(`${path}->${node.left.val}`);
-      }
-      if (node.right) {
-        stack.push(node.right);
-        paths.push(`${path}->${node.right.val}`);
-      }
-    }
-  }
-  return res;
-};
-console.log(binaryTreePaths(tree));
