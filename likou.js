@@ -25,13 +25,12 @@ var tree = {
     }
   }
 };
-
 //二叉树深度
 var maxDepth = function (root) {
   return root ? Math.max(maxDepth(root.left), maxDepth(root.right)) + 1 : 0;
 };
 
-//验证二叉树深度 正序便利
+// 正序便利
 function isPass(node, valueArr = []) {
   if (!node.val) return;
   if (node.left) isPass(node.left, valueArr);
