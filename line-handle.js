@@ -2,10 +2,7 @@
 const serial = ajaxArr =>
   ajaxArr.reduce((pre, cur) => pre.then(() => cur()), Promise.resolve());
 // 实现pipe
-const pipe =
-  (...fnc) =>
-  arg =>
-    fnc.reduce((acc, fn) => fn(acc), arg);
+const pipe = (...fnc) => arg => fnc.reduce((acc, fn) => fn(acc), arg);
 // 实现防止重复发送请求
 const firstPromise =
   (fn, p = null) =>

@@ -1,23 +1,18 @@
 /**二分搜索 */
-const search = (arr, target) => {
-  arr.sort((a, b) => b - a);
-  let l = 0;
-  let r = arr.length - 1;
-  while (r >= l) {
-    let mid = Math.floor((l + r) / 2);
-    console.log(r, mid, l);
-    if (arr[mid] > target) {
-      r = mid - 1;
-    } else if (arr[mid] < target) {
-      l = mid + 1;
-    } else {
-      return mid;
-    }
+function search(arr, key) {
+  arr.sort((a, b) => a - b);
+  var l = 0,
+    r = arr.length - 1;
+  while (l <= r) {
+    var mid = Math.floor((r + l) / 2);
+    if (arr[mid] > key) r = mid - 1;
+    if (arr[mid] < key) l = mid + 1;
+    if (key == arr[mid]) return mid;
   }
   return -1;
-};
+}
 
-search([1, 2, 3, 4, 5], 30);
+search([1, 2, 3, 4, 5], 4);
 
 /** PromiseAll */
 const PromiseAll = arrAsync => {
@@ -116,10 +111,8 @@ const EventsControl = () => {
   let obj = {};
   let emit = (key, fn) => {
     (obj[key] = []).push(fn);
-    console.log(obj);
   };
   let on = (key, ...arg) => {
-    console.log(obj);
     if (!obj[key]) return;
     obj[key].forEach(i => i(...arg));
   };
@@ -164,3 +157,47 @@ const timeout = i => new Promise(resolve => setTimeout(resolve(i), i));
 asyncPool(2, [1000, 5000, 3000, 2000], timeout).then(results => {
   console.log(results);
 });
+
+// 螺旋矩阵
+var spiralOrder = function (matrix) {
+  if (matrix.length == 0) return [];
+  const res = [];
+  let top = 0,
+    bottom = matrix.length - 1,
+    left = 0,
+    right = matrix[0].length - 1;
+  while (top <= bottom && left <= right) {
+    //循环条件
+    for (let i = left; i <= right; i++) res.push(matrix[top][i]); //循环完上面一行 top++
+    top++;
+    for (let i = top; i <= bottom; i++) res.push(matrix[i][right]); //循环右边一行 right--
+    right--;
+    if (top > bottom || left > right) break;
+    for (let i = right; i >= left; i--) res.push(matrix[bottom][i]);
+    bottom--;
+    for (let i = bottom; i >= top; i--) res.push(matrix[i][left]);
+    left++;
+  }
+  return res;
+};
+// 螺旋矩阵
+var spiraltestOrder = function (matrix) {
+  const res = [];
+  let top = 0,
+    bottom = matrix.length - 1,
+    left = 0,
+    right = matrix[0].length - 1;
+  // debugger
+  for (let i = top; i < right; i++) res.push(matrix[top][i]);
+  for (let i = top; i < bottom; i++) res.push(matrix[i][right]);
+  for (let i = right; i > left; i--) res.push(matrix[bottom][i]);
+  for (let i = bottom; i > top; i--) res.push(matrix[i][left]);
+  return res;
+};
+console.log(
+  spiraltestOrder([
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9]
+  ])
+);

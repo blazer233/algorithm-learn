@@ -46,34 +46,54 @@ const binaryTreePathsBt = tree => {
 //满足条件所有路径和
 const pathSumBt = (root, target) => {
   if (root == null) return [];
-  let stack = [[root, root.val, [root.val]]];
-  let res = []
+  let stack = [[root, root.val, root.val]];
+  let res = [];
   while (stack.length) {
     let [node, val, path] = stack.shift();
+    const cal = str => [
+      node[str],
+      node[str].val + val,
+      `${path}${node[str].val}`
+    ];
     if (!node.left && !node.right && val == target) {
-      res.push(path)
+      res.push(path);
     } else {
       if (node.left) {
-        stack.push([node.left, node.left.val + val, [...path, node.left.val]]);
+        stack.push(cal("left"));
       }
       if (node.right) {
-        stack.push([node.right, node.right.val + val, [...path, node.right.val]]);
+        stack.push(cal("right"));
       }
     }
   }
-  return res
+  return res;
 };
-console.log(binaryTreePathsBt(tree));
-
+var findMode = function (root, target = {}) {
+  if (!root) return;
+  if (root.left) findMode(root.left, target);
+  target[root.val] = (target[root.val] || 0) + 1;
+  if (root.right) findMode(root.right, target);
+  return target;
+};
 const dfs = (tree, value = []) => {
   if (!tree.val) return;
-  value.push(tree.val);
   if (tree.right) dfs(tree.right, value);
+  value.push(tree.val);
   if (tree.left) dfs(tree.left, value);
   return value;
 };
 
-//bfs 遍历N树
+var postorder = function (root) {
+  if (!root) return [];
+  const res = [];
+  let stack = [root];
+  while (stack.length > 0) {
+    const node = stack.pop();
+    res.push(node.val);
+    stack = [...stack, ...node.children];
+  }
+  return res.reverse();
+};
 const levelOrder = tree => {
   let stack = [];
   let res = [];
@@ -101,17 +121,10 @@ var maxDepth = function (root) {
   if (root) stack.push(root);
   while (stack.length) {
     res++;
-    let len = stack.length;
-    for (let i = 0; i < len; i++) {
-      let node = stack.pop();
-      resList.push(node.val);
-      if (node.left) {
-        stack.push(node.left);
-      }
-      if (node.left) {
-        stack.push(node.right);
-      }
-    }
+    let node = stack.pop();
+    resList.push(node.val);
+    if (node.left) stack.push(node.left);
+    if (node.left) stack.push(node.right);
   }
   return { res, resList };
 };
@@ -122,20 +135,13 @@ var minDepth = function (root) {
   let stack = [];
   if (root) stack.push(root);
   while (stack.length) {
-    let len = stack.length;
     res++;
-    for (let i = 0; i < len; i++) {
-      let node = stack.shift();
-      if (!node.right && !node.left) {
-        return res;
-      }
-      if (node.left) {
-        stack.push(node.left);
-      }
-      if (node.right) {
-        stack.push(node.right);
-      }
+    let node = stack.shift();
+    if (!node.right || !node.left) {
+      return res;
     }
+    if (node.left) stack.push(node.left);
+    if (node.right) stack.push(node.right);
   }
   return res;
 };
@@ -145,10 +151,12 @@ var invertTree = function (root) {
   if (!root) return root;
   let stack = [root];
   while (stack.length) {
-    let node = stack.shift();
+    let node = stack.pop();
     [node.left, node.right] = [node.right, node.left];
     if (node.left) stack.push(node.left);
     if (node.right) stack.push(node.right);
   }
   return root;
 };
+
+console.log(invertTree(tree));

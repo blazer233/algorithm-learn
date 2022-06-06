@@ -91,3 +91,12 @@ chooseOrNot = (List, halfNum) => {
   }
   return [f[len - 1][halfNum], selected];
 };
+
+const deepClone = obj => {
+  return new Promise(res => {
+    let { port1, port2 } = new MessageChannel();
+    port1.postMessage(obj);
+    port2.onmessage = e => res(e.data);
+  });
+};
+deepClone({ a: 123 }).then(res => console.log(res));

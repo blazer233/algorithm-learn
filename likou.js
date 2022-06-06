@@ -53,7 +53,7 @@ var isSymmetric = root => {
   if (!root) return;
   let stack = [[root.left, root.right]];
   while (stack.length) {
-    let [left, right] = stack.pop();
+    let [left] = stack.pop();
     if (!left && !right) continue;
     if (!left || !right || right.val != left.val) return false;
     stack.push([left.left, right.right]);
@@ -136,7 +136,6 @@ var findLengthOfLCIS = function (nums) {
   let num = -Infinity;
   let symbol = 0;
   for (let i of nums) {
-    debugger;
     if (i > num) {
       num = i;
       res++;
