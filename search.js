@@ -38,27 +38,27 @@ var tree = {
   left: {
     value: 2,
     left: {
-      value: 3
+      value: 3,
     },
     right: {
       value: 4,
       left: {
-        value: 5
+        value: 5,
       },
       right: {
-        value: 6
-      }
-    }
+        value: 6,
+      },
+    },
   },
   right: {
     value: 7,
     left: {
-      value: 8
+      value: 8,
     },
     right: {
-      value: 9
-    }
-  }
+      value: 9,
+    },
+  },
 };
 let result = [];
 let dfs_ = function (node) {
@@ -181,6 +181,7 @@ var binaryTreePaths3 = function (root) {
   let res = [];
   let cur = [];
   preOrder(root);
+
   function preOrder(node) {
     if (node) {
       cur.push(node.value);
@@ -270,7 +271,7 @@ var mappingRoman = {
   XL: 40,
   XC: 90,
   CD: 400,
-  CM: 900
+  CM: 900,
 };
 let tran = str => {
   let k = "";
@@ -389,6 +390,7 @@ console.log(lengthOfLIS([0, 1, 0, 3, 2, 3]));
 app.handle = function (req, res) {
   var stack = this.stack;
   var idx = 0;
+
   function next() {
     if (idx >= stack.length) return;
     while (idx < stack.length) {
@@ -484,13 +486,13 @@ export const applyMiddleware =
     var chain = [];
     var middlewareAPI = {
       getState: store.getState,
-      dispatch: (...args) => dispatch(...args)
+      dispatch: (...args) => dispatch(...args),
     };
     chain = middlewares.map(middleware => middleware(middlewareAPI));
     dispatch = compose(...chain)(store.dispatch);
     return {
       ...store,
-      dispatch
+      dispatch,
     };
   };
 export default function applyMiddleware(...middlewares) {
@@ -499,19 +501,20 @@ export default function applyMiddleware(...middlewares) {
       const store = createStore(...args);
       const middlewareAPI = {
         getState: store.getState,
-        dispatch: (...args) => dispatch(...args)
+        dispatch: (...args) => dispatch(...args),
       };
       const chain = middlewares.map(middleware => middleware(middlewareAPI));
       dispatch = compose(...chain)(store.dispatch);
 
       return {
         ...store,
-        dispatch
+        dispatch,
       };
     };
 }
 
 const middleware = [mw1, mw2, mw3];
+
 function compose(middleware) {
   return ctx => {
     const dispatch = i => {
@@ -527,9 +530,10 @@ const fn = koaCompose(middleware);
 
 fn();
 //处理并发请求
-let firstPromise = (fn, p = true) => (...arg) =>  p ? p : (p = fn(...arg).finally(() => (p = null)));
-  
-
+let firstPromise =
+  (fn, p = true) =>
+  (...arg) =>
+    p ? p : (p = fn(...arg).finally(() => (p = null)));
 
 let count = 1;
 let promiseFunction = () => new Promise(rs => setTimeout(rs(count++), 1000));
@@ -589,5 +593,13 @@ limitRequest([
   "http://xxb",
   "http://xxc",
   "http://xxd",
-  "http://xxe"
+  "http://xxe",
 ]);
+
+const a = Promise.reject(1);
+a.then(
+  res => {},
+  err => {
+    console.log(err);
+  }
+);
