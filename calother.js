@@ -68,7 +68,7 @@ function clone(target, map = new WeakMap()) {
 
 /**最长不重复字符串 */
 
-const calStr = str => {
+const onlyStr = str => {
   let res = "";
   let num = 0;
   let i = 0;
@@ -110,7 +110,11 @@ const reDfs = root => {
 const EventsControl = () => {
   let obj = {};
   let emit = (key, fn) => {
-    (obj[key] = []).push(fn);
+    if (!obj[key]) {
+      (obj[key] = []).push(fn);
+    } else {
+      obj[key].push(fn);
+    }
   };
   let on = (key, ...arg) => {
     if (!obj[key]) return;
@@ -128,6 +132,23 @@ const debounce = (fn, wait) => {
       fn.apply(this, arg);
     }, wait);
   };
+};
+
+//最长不重复字符串
+var calStr = str => {
+  let res = "";
+  let num = 0;
+  let i = 0;
+  while (i < str.length) {
+    num = Math.max(res.length, num);
+    if (res.includes(str[i])) {
+      res = res.slice(1);
+    } else {
+      res += str[i];
+      i++;
+    }
+  }
+  return { num, res };
 };
 
 async function asyncPool(poolLimit, iterable, iteratorFn) {
@@ -198,6 +219,30 @@ console.log(
   spiraltestOrder([
     [1, 2, 3],
     [4, 5, 6],
-    [7, 8, 9]
+    [7, 8, 9],
   ])
 );
+
+// 数组面积
+const maxArea = height => {
+  let [m, n] = [0, height.length - 1];
+  let maxArea = 0;
+  // 若m=n，则面积为0，所以不取等于
+  while (m < n) {
+    // 当前有效面积的高
+    const h = Math.min(height[m], height[n]);
+    // 当前面积
+    const area = (n - m) * h;
+    // 更新最大面积
+    maxArea = Math.max(maxArea, area);
+    // 更新指针
+    if (height[m] < height[n]) {
+      // 左指针对应的值小，左指针右移
+      m++;
+    } else {
+      // 右指针对应的值小，右指针左移
+      n--;
+    }
+  }
+  return maxArea;
+};

@@ -3,28 +3,27 @@
  * 0 1 0 2 3 1
  * 1 2 1 3 4 4
  */
+//
 const lengthOfLIS = nums => {
   if (!nums || !nums.length) return 0;
-  let s = [nums[0]];
+  let res = [nums[0]];
   for (let i of nums) {
-    if (i > s[s.length - 1]) {
-      s.push(i);
+    if (i > res[res.length - 1]) {
+      res.push(i);
     } else {
-      s[s.findIndex(s => s >= i)] = i;
-      // let left = 0;
-      // let right = s.length - 1;
-      // while (left < right) {
-      //   let mid = (left + right) >> 1;
-      //   if (s[mid] < i) {
-      //     left = mid + 1;
-      //   } else {
-      //     right = mid;
-      //   }
-      // }
-      // s[left] = i;
+      // s[s.findIndex(s => s >= i)] = i;
+      let r = res.length - 1;
+      let l = 0;
+      while (r >= l) {
+        let mid = Math.floor((r + l) / 2);
+        if (res[mid] == i) r = mid - 1;
+        if (res[mid] > i) r = mid - 1;
+        if (res[mid] < i) l = mid + 1;
+      }
+      res[l] = i;
     }
   }
-  return s;
+  return res;
 };
 const lengthOfLISdp = function (nums) {
   const dp = new Array(nums.length).fill(1);
