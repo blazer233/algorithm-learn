@@ -134,7 +134,7 @@ const debounce = (fn, wait) => {
   };
 };
 
-//最长不重复字符串
+//最长连续不重复字符串
 var calStr = str => {
   let res = "";
   let num = 0;

@@ -17,7 +17,8 @@ const asyncPool = async (arr, iteratorFn, limit) => {
   let exec = new Set();
   for (let i of arr) {
     const task = iteratorFn(i);
-    const del = () => {
+    const del = res => {
+      console.log(`id${res}的请求已经处理完毕,当前并发${exec.size}`);
       exec.delete(task); //每跑完一个任务,从并发池删除个任务
     };
     exec.add(task);
