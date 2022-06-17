@@ -355,27 +355,3 @@ var mergeTrees = function (root1, root2) {
   root1.right = mergeTrees(root1.right, root2.right);
   return root1;
 };
-
-var arr = [
-  { id: 6, name: "部门1", pid: 0 },
-  { id: 1, name: "部门1", pid: 0 },
-  { id: 2, name: "部门2", pid: 1 },
-  { id: 3, name: "部门3", pid: 1 },
-  { id: 4, name: "部门4", pid: 3 },
-  { id: 5, name: "部门5", pid: 4 },
-];
-function arrayToTree(arr) {
-  const res = [];
-  const map = {};
-  for (let i of arr) map[i.id] = { ...i, child: [] };
-  for (let i of arr) {
-    let item = map[i.id];
-    if (i.pid == 0) {
-      res.push(item);
-    } else {
-      map[i.pid].child.push(item);
-    }
-  }
-  return res;
-}
-console.log(arrayToTree(arr));

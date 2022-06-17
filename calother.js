@@ -28,6 +28,20 @@ const PromiseAll = arrAsync => {
   });
 };
 
+/** PromiseAllSettled  */
+const PromiseAllSettled = arrAsync => {
+  return new Promise(reslove => {
+    let arr = [];
+    if (!arrAsync.length) reslove([]);
+    for (let i = 0; i < arrAsync.length; i++) {
+      Promise.resolve(arrAsync[i])
+        .then(res => (arr[i] = { status: "fulfilled", value: res }))
+        .catch(res => (arr[i] = { status: "rejected", reason: res }));
+    }
+    reslove(arr);
+  });
+};
+
 /** PromiseRace */
 function promiseRace(arr) {
   return new Promise((resolve, reject) => {
@@ -246,3 +260,26 @@ const maxArea = height => {
   }
   return maxArea;
 };
+var arr = [
+  { id: 6, name: "部门1", pid: 0 },
+  { id: 1, name: "部门1", pid: 0 },
+  { id: 2, name: "部门2", pid: 1 },
+  { id: 3, name: "部门3", pid: 1 },
+  { id: 4, name: "部门4", pid: 3 },
+  { id: 5, name: "部门5", pid: 4 },
+];
+function arrayToTree(arr) {
+  const res = [];
+  const map = {};
+  for (let i of arr) map[i.id] = { ...i, child: [] };
+  for (let i of arr) {
+    let item = map[i.id];
+    if (i.pid == 0) {
+      res.push(item);
+    } else {
+      map[i.pid].child.push(item);
+    }
+  }
+  return res;
+}
+console.log(arrayToTree(arr));
