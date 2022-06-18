@@ -1,3 +1,17 @@
+const request1 = id => {
+  return new Promise(resolve => {
+    //随机一个执行时间
+    let time = Math.floor(10000 * Math.random());
+    console.log(`id为${id}开始请求,预计执行时间${time / 1000}`);
+    setTimeout(() => {
+      resolve(id);
+    }, time);
+  }).then(id => {
+    console.log(`id为${id}的请求进行逻辑处理`);
+    return id;
+  });
+};
+const request2 = (arg, t = 1000) => new Promise(res => setTimeout(res, t, arg));
 /**
  * 并发分为两种模式
  *  1、已知请求并发数
@@ -17,32 +31,15 @@
 
 /**已知并发个数类型： ********************************************************************************/
 
-const request1 = id => {
-  return new Promise(resolve => {
-    //随机一个执行时间
-    let time = Math.floor(10000 * Math.random());
-    console.log(`id为${id}开始请求,预计执行时间${time / 1000}`);
-    setTimeout(() => {
-      resolve(id);
-    }, time);
-  }).then(id => {
-    console.log(`id为${id}的请求进行逻辑处理`);
-    return id;
-  });
-};
 let idArray = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 const asyncPool = async (arr, iteratorFn = request, limit = 3) => {
   let exec = new Set();
   for (let i of arr) {
     const task = iteratorFn(i);
     exec.add(task);
-    task.finally(res => {
-      console.log(`id${res}的请求已经处理完毕,当前并发${exec.size}`);
-      exec.delete(task); //每跑完一个任务,从并发池删除个任务
-    });
+    task.finally(() => exec.delete(task));
     if (exec.size >= limit) {
-      //使用await进行阻塞,最快的执行之后才能继续循环
-      return await Promise.race(exec);
+      await Promise.race(exec);
     }
   }
 };
@@ -71,7 +68,6 @@ const Scheduler2 = (ajax = request2, limit = 3) => {
       run();
     });
 };
-const request2 = arg => new Promise(res => setTimeout(res, 1000, arg));
 const createPromise = Scheduler2();
 createPromise(1).then(res => console.log(res));
 createPromise(2).then(res => console.log(res));
@@ -105,10 +101,9 @@ class Scheduler {
       });
   }
 }
-const request3 = arg => new Promise(res => setTimeout(res, arg, arg));
 const scheduler = new Scheduler();
 const addTask = (time, order) => {
-  scheduler.add(() => request3(time).then(() => console.log(order)));
+  scheduler.add(() => request2(time).then(() => console.log(order)));
 };
 
 addTask(1000, "1");
