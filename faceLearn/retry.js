@@ -1,21 +1,16 @@
 // 支持重试的函数
-const asyncReTryFunc = (asyncFunc, times) => {
-  return new Promise((resolve, reject) => {
-    const reTryFunc = async (time = 0) => {
-      asyncFunc()
-        .then(res => resolve(res))
+const asyncReTryFuncs = (fn, times) =>
+  new Promise((reslove, rej) => {
+    const tryFn = (tim = 0) => {
+      fn()
+        .then(res => reslove(res))
         .catch(err => {
-          if (time < times) {
-            time++;
-            setTimeout(() => reTryFunc(time), 500);
-          } else {
-            reject(err);
-          }
+          tim++;
+          tim < times ? tryFn(tim) : rej(err);
         });
     };
-    reTryFunc();
+    tryFn();
   });
-};
 
 var findKthLargest = function (nums, k) {
   for (let i = nums.length; i > nums.length - k - 1; i--) {

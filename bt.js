@@ -146,7 +146,7 @@ var maxDepth = function (root) {
   if (root) stack.push(root);
   while (stack.length) {
     res++;
-    let node = stack.pop();
+    let node = stack.shift();
     resList.push(node.val);
     if (node.left) stack.push(node.left);
     if (node.left) stack.push(node.right);
@@ -236,35 +236,6 @@ var findMaxLength = function (nums) {
   return res;
 };
 
-/**
-最后一个节点是根节点
-找到第一个大于根节点的值，这个值把数组分为两部分，左树（可能为空）和 右树（可能为空）
-这个值后边所有的数都要大于根节点的值，如果不是，直接返回 false，否则判断左树和右树，
-至于右树怎么排，不用考虑（比如有两个点，也是可以的，注意不是二叉树返回的排列包括null的，只是数字，不要考虑二叉树的结构
- */
-function fn(arr, left, right) {
-  if (left >= right) {
-    return true;
-  }
-  let p = -1,
-    nodeVal = arr[right];
-  for (let i = 0; i < right; i++) {
-    // 找第一个大于根节点的节点，就是右树的开始
-    if (p == -1 && arr[i] > nodeVal) {
-      p = i;
-    }
-    // 如果右树，有任意小于根节点的直接返回false
-    if (p > -1 && i >= p && arr[i] < nodeVal) {
-      return false;
-    }
-  }
-  if (p > -1) {
-    return fn(arr, left, p - 1) && fn(arr, p, right - 1);
-  } else {
-    return fn(arr, left, right - 1);
-  }
-}
-
 //路径总和
 var hasPathSum = function (root, targetSum) {
   if (!root) return false;
@@ -287,21 +258,6 @@ var sumNumberbts = function (root) {
     if (node.right) stack.push([node.right, node.right.val + num]);
   }
   return res;
-};
-
-var sumNumbers = function (root) {
-  let sum = 0;
-  function dfs(root, curVal = 0) {
-    if (!root) return;
-    curVal += root.val;
-    if (!root.left && !root.right) {
-      sum += Number(curVal);
-    }
-    dfs(root.left, curVal);
-    dfs(root.right, curVal);
-  }
-  dfs(root);
-  return sum;
 };
 
 //是否为对称二叉树

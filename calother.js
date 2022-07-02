@@ -64,7 +64,7 @@ const queue = list => ctx => {
 
 /**深拷贝 */
 
-function clone(target, map = new WeakMap()) {
+function deepClone1(target, map = new WeakMap()) {
   if (typeof target === "object") {
     let cloneTarget = Array.isArray(target) ? [] : {};
     if (map.get(target)) {
@@ -79,6 +79,43 @@ function clone(target, map = new WeakMap()) {
     return target;
   }
 }
+
+const deepClone2 = obj => {
+  return new Promise(res => {
+    let { port1, port2 } = new MessageChannel();
+    port1.postMessage(obj);
+    port2.onmessage = e => res(e.data);
+  });
+};
+deepClone({ a: 123 }).then(res => console.log(res));
+
+/**最长回文子串 */
+/**
+ * @param {string} s
+ * @return {string}
+ */
+var longestPalindrome = function (s) {
+  let max = "";
+
+  for (let i = 0; i < s.length; i++) {
+    // 分奇偶， 一次遍历，每个字符位置都可能存在奇数或偶数回文
+    helper(i, i);
+    helper(i, i + 1);
+  }
+
+  function helper(l, r) {
+    // 定义左右双指针
+    while (l >= 0 && r < s.length && s[l] === s[r]) {
+      l--;
+      r++;
+    }
+    // 拿到回文字符， 注意 上面while满足条件后多执行了一次，所以需要l+1, r+1-1
+    const maxStr = s.slice(l + 1, r + 1 - 1);
+    // 取最大长度的回文字符
+    if (maxStr.length > max.length) max = maxStr;
+  }
+  return max;
+};
 
 /**最长不重复字符串 */
 
@@ -237,6 +274,19 @@ console.log(
   ])
 );
 
+//数组中的第K个最大元素
+var findKthLargest = function (nums, k) {
+  for (let i = 0; i < k; i++) {
+    for (let j = 0; j < nums.length - i; j++) {
+      if (nums[j] > nums[j + 1]) {
+        [nums[j + 1], nums[j]] = [nums[j], nums[j + 1]];
+      }
+    }
+  }
+  console.log(nums);
+  return nums[nums.length - k];
+};
+
 // 数组面积
 const maxArea = height => {
   let [m, n] = [0, height.length - 1];
@@ -268,7 +318,7 @@ var arr = [
   { id: 4, name: "部门4", pid: 3 },
   { id: 5, name: "部门5", pid: 4 },
 ];
-function arrayToTree(arr) {
+function dataTotree(arr) {
   const res = [];
   const map = {};
   for (let i of arr) map[i.id] = { ...i, child: [] };
@@ -282,4 +332,4 @@ function arrayToTree(arr) {
   }
   return res;
 }
-console.log(arrayToTree(arr));
+console.log(dataTotree(arr));

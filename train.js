@@ -1,3 +1,5 @@
+// 二分查找
+const search = (arr, k) => {};
 // promise.All
 const promiseAll = arr => {};
 // 异步队列
@@ -8,18 +10,24 @@ const queue = list => ctx => {
   };
   func(0);
 };
-// 满足条件所有路径和的遍历
-const pathSumBt = (root, target) => {};
+// 所有路径遍历
+const binaryTreePathsBt = (root, target) => {};
+// 左子节点之和
+var sumOfLeftLeavess = function (root) {};
 // 深拷贝
 const deepClone = (target, map = new WeakMap()) => {};
 // Promise.Race
 const promiseRace = arr => {};
-// lengthOfLIS
+// 递增子串
 const lengthOfLIS = nums => {};
 //Proxy 劫持
 const proxyMap = obj => {};
-//对称二叉树
-const isSymmetric = tree => {};
+//最长不重复字符串
+const onlyStr = str => {};
+//dfs 是否为对称二叉树
+const isSymmetric = root => {};
+//dfs 翻转二叉树
+const invertTree = tree => {};
 //合并二叉树
 //数组转树
 const arr = [
@@ -34,5 +42,5 @@ const dataTotree = arr => {};
 //数组转二叉树
 const creatTree = val => ({ val, left: "", right: "" });
 const array2binary = arr => {};
-const asyncPool = async (poolLimit, iterable, iteratorFn) => {};
+const asyncPool = async (iteratorFn, limit) => {};
 const asyncPoolArr = async (arr, iteratorFn, limit) => {};
