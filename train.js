@@ -36,7 +36,7 @@ const arr = [
   { id: 2, name: "部门2", pid: 1 },
   { id: 3, name: "部门3", pid: 1 },
   { id: 4, name: "部门4", pid: 3 },
-  { id: 5, name: "部门5", pid: 4 },
+  { id: 5, name: "部门5", pid: 4 }
 ];
 const dataTotree = arr => {};
 //数组转二叉树
@@ -44,3 +44,4 @@ const creatTree = val => ({ val, left: "", right: "" });
 const array2binary = arr => {};
 const asyncPool = async (iteratorFn, limit) => {};
 const asyncPoolArr = async (arr, iteratorFn, limit) => {};
+var calStr = str => {};

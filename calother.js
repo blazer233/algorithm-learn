@@ -65,19 +65,18 @@ const queue = list => ctx => {
 /**深拷贝 */
 
 function deepClone1(target, map = new WeakMap()) {
-  if (typeof target === "object") {
-    let cloneTarget = Array.isArray(target) ? [] : {};
-    if (map.get(target)) {
-      return map.get(target);
-    }
-    map.set(target, cloneTarget);
-    for (const key in target) {
-      cloneTarget[key] = clone(target[key], map);
-    }
+  if (obj instanceof RegExp) return new RegExp(obj);
+  if (obj instanceof Date) return new Date(obj);
+  if (obj == null || typeof obj != "object") return obj;
+  let cloneTarget = Array.isArray(target) ? [] : {};
+  if (map.get(target)) {
     return map.get(target);
-  } else {
-    return target;
   }
+  map.set(target, cloneTarget);
+  for (const key in target) {
+    cloneTarget[key] = clone(target[key], map);
+  }
+  return map.get(target);
 }
 
 const deepClone2 = obj => {
@@ -158,21 +157,27 @@ const reDfs = root => {
 
 /**收集发布 */
 
-const EventsControl = () => {
-  let obj = {};
-  let emit = (key, fn) => {
-    if (!obj[key]) {
-      (obj[key] = []).push(fn);
-    } else {
-      obj[key].push(fn);
+class PubSub {
+  constructor() {
+    this.events = {};
+  }
+  subscribe(type, cb) {
+    this.events[type] = this.events[type] || new Set();
+    this.events[type].add(cb);
+  }
+  publish(type, ...args) {
+    this.events[type] && this.events[type].forEach(cb => cb(...args));
+  }
+  unsubscribe(type, cb) {
+    if (this.events[type]) {
+      this.events[type].delete(cb);
+      if (!this.events[type].size) this.unsubscribeAll(type);
     }
-  };
-  let on = (key, ...arg) => {
-    if (!obj[key]) return;
-    obj[key].forEach(i => i(...arg));
-  };
-  return { emit, on, obj };
-};
+  }
+  unsubscribeAll(type) {
+    if (this.events[type]) delete this.events[type];
+  }
+}
 
 /**防抖 */
 const debounce = (fn, wait) => {
@@ -270,14 +275,14 @@ console.log(
   spiraltestOrder([
     [1, 2, 3],
     [4, 5, 6],
-    [7, 8, 9],
+    [7, 8, 9]
   ])
 );
 
 //数组中的第K个最大元素
 var findKthLargest = function (nums, k) {
   for (let i = 0; i < k; i++) {
-    for (let j = 0; j < nums.length - i; j++) {
+    for (let j = 0; j < nums.length - i - 1; j++) {
       if (nums[j] > nums[j + 1]) {
         [nums[j + 1], nums[j]] = [nums[j], nums[j + 1]];
       }
@@ -287,6 +292,36 @@ var findKthLargest = function (nums, k) {
   return nums[nums.length - k];
 };
 
+// 实现new
+const myNew = (fn, arg) => {
+  const tmp = {};
+  Object.setPrototypeOf(tmp, fn.prototype);
+  fn.apply(tmp, arg);
+  return tmp;
+};
+// 实现call
+Function.prototype.myCall = function (...rest) {
+  let tmp = rest[0] || window;
+  let args = rest.slice(1);
+  tmp._self = this;
+  return tmp._self(...args);
+};
+
+// 实现bind
+Function.prototype.myBind = function (...rest) {
+  let tmp = rest[0] || window;
+  let args = rest.slice(1);
+  let self = this;
+  return (...rests) => self.call(tmp, [...args, ...rests.slice(1)]);
+};
+
+function Instanceof_(obj, fn) {
+  while (true) {
+    if (obj.__proto__ === fn.prototype) return true;
+    if (obj.__proto__ === null) return false;
+    obj = obj.__proto__;
+  }
+}
 // 数组面积
 const maxArea = height => {
   let [m, n] = [0, height.length - 1];
@@ -316,7 +351,7 @@ var arr = [
   { id: 2, name: "部门2", pid: 1 },
   { id: 3, name: "部门3", pid: 1 },
   { id: 4, name: "部门4", pid: 3 },
-  { id: 5, name: "部门5", pid: 4 },
+  { id: 5, name: "部门5", pid: 4 }
 ];
 function dataTotree(arr) {
   const res = [];
