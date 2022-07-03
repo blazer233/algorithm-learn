@@ -1,34 +1,13 @@
-
-// let n = parseInt(readline());
-// let arr = readline().split(' ').map(e => Number(e));
-// let q = parseInt(readline());
-// let xihaodu = [];
-// while(q>0){
-//   q--;
-//   xihaodu.push(readline().split(' ').map(e => Number(e)));
-// }
-// let res = [];
-// arr.forEach((item, index) => {
-//     if (res[item] == undefined){
-//         res[item]=[];
-//     }
-//     res[item].push(index);
-// })
-// xihaodu.forEach((item, index) => {
-//     let [l, r, k] = item;
-//     let count = 0;
-//     if (res[k] == undefined) {
-//         console.log(0)
-//     }else {
-//         res[k].forEach(e => {
-//             if (e>=l-1 && e<=r-1) {
-//                 count++;
-//             }
-//         })
-//         print(count)
-//     }
-// })
-//webpack的编译原理
-//webpack的loader/plugin
-//babel的转义原理和流程
-//cli脚手架原理
+var arr1 = [1, 2, [3], [1, 2, 3, [4, [2, 3, 4]]]];
+function flatten(arr) {
+  while (arr.some(item => Array.isArray(item))) {
+    arr = [].concat(...arr);
+  }
+  return arr;
+  return arr.flat(Infinity);
+  return arr
+    .toString()
+    .split(",")
+    .map(item => +item);
+}
+flatten(arr1); //[1, 2, 3, 1, 2, 3, 4, 2, 3, 4]

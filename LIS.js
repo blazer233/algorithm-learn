@@ -2,6 +2,9 @@
  * 0 1 2 3 4 5
  * 0 1 0 2 3 1
  * 1 2 1 3 4 4
+ *
+ * 1. 维护一个子序列存放当前的上升序列
+ * 2. 将当前数与子序列最大值比较，如果比最大值大之间加入队尾，如果更新则找一个合适的位置替换当前位置的元素
  */
 //
 const lengthOfLIS = nums => {
@@ -12,18 +15,19 @@ const lengthOfLIS = nums => {
       res.push(i);
     } else {
       // s[s.findIndex(s => s >= i)] = i;
-      let r = res.length - 1;
-      let l = 0;
-      while (r >= l) {
+      let [l, r] = [0, res.length - 1];
+      while (r > l) {
         let mid = Math.floor((r + l) / 2);
-        if (res[mid] == i) r = mid - 1;
-        if (res[mid] > i) r = mid - 1;
-        if (res[mid] < i) l = mid + 1;
+        if (res[mid] < i) {
+          l = mid + 1;
+        } else {
+          r = l;
+        }
       }
       res[l] = i;
     }
   }
-  return res;
+  return res.length;
 };
 const lengthOfLISdp = function (nums) {
   const dp = new Array(nums.length).fill(1);

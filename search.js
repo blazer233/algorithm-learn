@@ -11,33 +11,6 @@
     9、 WebSocket协议跨域
  */
 
-const clone = (obj, m = new WeakMap()) => {
-  let _obj = Array.isArray(obj) ? [] : {};
-  if (m.get(obj)) return m.get(obj);
-  m.set(obj, _obj);
-  for (let i in obj) {
-    _obj[i] = clone(obj[i], m);
-  }
-  return _obj;
-};
-
-function new_(fn, arg) {
-  let obj = {};
-  Object.getPrototypeOf(obj, fn.prototype);
-  fn.apply(obj, arg);
-  return obj;
-}
-
-const debounce = (fn, wait) => {
-  let _ = "";
-  return (...arg) => {
-    clearTimeout(_);
-    _ = setTimeout(() => {
-      fn.apply(this, arg);
-    }, wait);
-  };
-};
-
 var mappingRoman = {
   I: 1,
   V: 5,
@@ -51,7 +24,7 @@ var mappingRoman = {
   XL: 40,
   XC: 90,
   CD: 400,
-  CM: 900,
+  CM: 900
 };
 let tran = str => {
   let k = "";
@@ -66,23 +39,6 @@ let tran = str => {
   }
 };
 tran("MCMXCIV");
-
-/**
- * @param {string} s
- * @return {number}
- */
-var lengthOfLongestSubstring = function (s) {
-  var subs = "";
-  var max = 0;
-  for (let i = 0; i < s.length; i++) {
-    if (subs.includes(s[i])) {
-      subs = subs.slice(subs.indexOf(s[i]) + 1);
-    }
-    subs += s[i];
-    max = Math.max(max, subs.length);
-  }
-  return max;
-};
 
 const commonFirst = strs => {
   let ans = "";
@@ -203,13 +159,13 @@ export const applyMiddleware =
     var chain = [];
     var middlewareAPI = {
       getState: store.getState,
-      dispatch: (...args) => dispatch(...args),
+      dispatch: (...args) => dispatch(...args)
     };
     chain = middlewares.map(middleware => middleware(middlewareAPI));
     dispatch = compose(...chain)(store.dispatch);
     return {
       ...store,
-      dispatch,
+      dispatch
     };
   };
 export default function applyMiddleware(...middlewares) {
@@ -218,14 +174,14 @@ export default function applyMiddleware(...middlewares) {
       const store = createStore(...args);
       const middlewareAPI = {
         getState: store.getState,
-        dispatch: (...args) => dispatch(...args),
+        dispatch: (...args) => dispatch(...args)
       };
       const chain = middlewares.map(middleware => middleware(middlewareAPI));
       dispatch = compose(...chain)(store.dispatch);
 
       return {
         ...store,
-        dispatch,
+        dispatch
       };
     };
 }
@@ -243,19 +199,3 @@ function compose(middleware) {
   };
 }
 // const fn = compose(middleware);
-const fn = koaCompose(middleware);
-
-fn();
-
-let count = 1;
-let promiseFunction = () => new Promise(rs => setTimeout(rs(count++), 1000));
-let firstFn = firstPromise(promiseFunction);
-firstFn().then(console.log); // 1
-firstFn().then(console.log); // 1
-firstFn().then(console.log); // 1
-
-setTimeout(() => {
-  firstFn().then(console.log); // 2
-  firstFn().then(console.log); // 2
-  firstFn().then(console.log); // 2
-}, 3000);

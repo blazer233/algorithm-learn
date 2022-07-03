@@ -1,8 +1,7 @@
 /**二分搜索 */
 function search(arr, key) {
   arr.sort((a, b) => a - b);
-  var l = 0,
-    r = arr.length - 1;
+  let [l, r] = [0, nums.length - 1];
   while (l <= r) {
     var mid = Math.floor((r + l) / 2);
     if (arr[mid] > key) r = mid - 1;
@@ -11,8 +10,137 @@ function search(arr, key) {
   }
   return -1;
 }
+/**
+ * https://leetcode.cn/problems/que-shi-de-shu-zi-lcof/
+ * n-1中缺失的数字
+ */
+const missingNumber = function (nums) {
+  let [l, r] = [0, nums.length - 1];
+  while (l <= r) {
+    let mid = Math.floor((l + r) / 2);
+    if (nums[mid] == mid) {
+      //说明小于mide的是不缺少的
+      l = mid + 1;
+    } else if (mid < nums[mid]) {
+      r = mid - 1;
+    }
+  }
+  return l;
+};
 
-search([1, 2, 3, 4, 5], 4);
+/**最长不重复字符串 */
+
+var lengthOfLongestSubstring = str => {
+  let res = "";
+  let num = 0;
+  let i = 0;
+  while (i < str.length) {
+    num = Math.max(res.length, num);
+    if (res.includes(str[i])) {
+      res = res.slice(1);
+    } else {
+      res += str[i];
+      i++;
+    }
+  }
+  return { num, res };
+};
+var lengthOfLongestSubstring = function (s) {
+  let map = new Map(),
+    max = 0;
+  for (let i = 0, j = 0; j < s.length; j++) {
+    if (map.has(s[j])) {
+      i = Math.max(map.get(s[j]) + 1, i);
+    }
+    max = Math.max(max, j - i + 1);
+    map.set(s[j], j);
+  }
+  return max;
+};
+
+//数组中的第K个最大元素
+var findKthLargest = function (nums, k) {
+  for (let i = 0; i < k; i++) {
+    for (let j = 0; j < nums.length - i - 1; j++) {
+      if (nums[j] > nums[j + 1]) {
+        [nums[j + 1], nums[j]] = [nums[j], nums[j + 1]];
+      }
+    }
+  }
+  console.log(nums);
+  return nums[nums.length - k];
+};
+
+// 实现new
+const myNew = (fn, arg) => {
+  const tmp = {};
+  Object.setPrototypeOf(tmp, fn.prototype);
+  fn.apply(tmp, arg);
+  return tmp;
+};
+// 实现call
+Function.prototype.myCall = function (...rest) {
+  let tmp = rest[0] || window;
+  let args = rest.slice(1);
+  tmp._self = this;
+  return tmp._self(...args);
+};
+
+// 实现bind
+Function.prototype.myBind = function (...rest) {
+  let tmp = rest[0] || window;
+  let args = rest.slice(1);
+  let self = this;
+  return (...rests) => self.call(tmp, [...args, ...rests.slice(1)]);
+};
+
+function myInstanceof(obj, fn) {
+  while (true) {
+    if (obj.__proto__ === fn.prototype) return true;
+    if (obj.__proto__ === null) return false;
+    obj = obj.__proto__;
+  }
+}
+// 数组面积
+const maxArea = height => {
+  let [m, n] = [0, height.length - 1];
+  let maxArea = 0;
+  // 若m=n，则面积为0，所以不取等于
+  while (m < n) {
+    // 当前有效面积的高
+    const h = Math.min(height[m], height[n]);
+    // 当前面积
+    const area = (n - m) * h;
+    // 更新最大面积
+    maxArea = Math.max(maxArea, area);
+    // 更新指针
+    if (height[m] < height[n]) {
+      // 左指针对应的值小，左指针右移
+      m++;
+    } else {
+      // 右指针对应的值小，右指针左移
+      n--;
+    }
+  }
+  return maxArea;
+};
+
+var isValid = function (s) {
+  let map = {
+    "{": "}",
+    "(": ")",
+    "[": "]"
+  };
+  let stack = [];
+  for (let i of s) {
+    if (map[i]) {
+      stack.push(i);
+      continue;
+    }
+    if (map[stack.pop()] !== i) return false;
+  }
+  return stack.length === 0;
+};
 
 /** PromiseAll */
 const PromiseAll = arrAsync => {
@@ -52,14 +180,19 @@ function promiseRace(arr) {
     );
   });
 }
-/**异步队列 */
-
-const queue = list => ctx => {
-  let func = idx => {
-    if (!list[idx]) return Promise.resolve();
-    Promise.resolve(list[idx](ctx, func.bind(null, idx + 1)));
-  };
-  func(0);
+/**
+ * https://leetcode.cn/problems/jump-game/
+1. 使用一个变量保存当前可到达的最大位置
+2. 时刻更新最大位置
+3. 可达位置小于数组长度返回false，反之即反
+ */
+var canJump = function (nums) {
+  let k = 0;
+  for (let i = 0; i < nums.length; i++) {
+    if (i > k) return false;
+    k = Math.max(k, i + nums[i]);
+  }
+  return true;
 };
 
 /**深拷贝 */
@@ -87,52 +220,6 @@ const deepClone2 = obj => {
   });
 };
 deepClone({ a: 123 }).then(res => console.log(res));
-
-/**最长回文子串 */
-/**
- * @param {string} s
- * @return {string}
- */
-var longestPalindrome = function (s) {
-  let max = "";
-
-  for (let i = 0; i < s.length; i++) {
-    // 分奇偶， 一次遍历，每个字符位置都可能存在奇数或偶数回文
-    helper(i, i);
-    helper(i, i + 1);
-  }
-
-  function helper(l, r) {
-    // 定义左右双指针
-    while (l >= 0 && r < s.length && s[l] === s[r]) {
-      l--;
-      r++;
-    }
-    // 拿到回文字符， 注意 上面while满足条件后多执行了一次，所以需要l+1, r+1-1
-    const maxStr = s.slice(l + 1, r + 1 - 1);
-    // 取最大长度的回文字符
-    if (maxStr.length > max.length) max = maxStr;
-  }
-  return max;
-};
-
-/**最长不重复字符串 */
-
-const onlyStr = str => {
-  let res = "";
-  let num = 0;
-  let i = 0;
-  while (i < str.length) {
-    num = Math.max(res.length, num);
-    if (res.includes(str[i])) {
-      res = res.slice(1);
-    } else {
-      res += str[i];
-      i++;
-    }
-  }
-  return { num, res };
-};
 
 /**二叉树 */
 const dfs = (tree, value = []) => {
@@ -178,6 +265,16 @@ class PubSub {
     if (this.events[type]) delete this.events[type];
   }
 }
+
+/**异步队列 */
+
+const queue = list => ctx => {
+  let func = idx => {
+    if (!list[idx]) return Promise.resolve();
+    Promise.resolve(list[idx](ctx, func.bind(null, idx + 1)));
+  };
+  func(0);
+};
 
 /**防抖 */
 const debounce = (fn, wait) => {
@@ -278,73 +375,6 @@ console.log(
     [7, 8, 9]
   ])
 );
-
-//数组中的第K个最大元素
-var findKthLargest = function (nums, k) {
-  for (let i = 0; i < k; i++) {
-    for (let j = 0; j < nums.length - i - 1; j++) {
-      if (nums[j] > nums[j + 1]) {
-        [nums[j + 1], nums[j]] = [nums[j], nums[j + 1]];
-      }
-    }
-  }
-  console.log(nums);
-  return nums[nums.length - k];
-};
-
-// 实现new
-const myNew = (fn, arg) => {
-  const tmp = {};
-  Object.setPrototypeOf(tmp, fn.prototype);
-  fn.apply(tmp, arg);
-  return tmp;
-};
-// 实现call
-Function.prototype.myCall = function (...rest) {
-  let tmp = rest[0] || window;
-  let args = rest.slice(1);
-  tmp._self = this;
-  return tmp._self(...args);
-};
-
-// 实现bind
-Function.prototype.myBind = function (...rest) {
-  let tmp = rest[0] || window;
-  let args = rest.slice(1);
-  let self = this;
-  return (...rests) => self.call(tmp, [...args, ...rests.slice(1)]);
-};
-
-function Instanceof_(obj, fn) {
-  while (true) {
-    if (obj.__proto__ === fn.prototype) return true;
-    if (obj.__proto__ === null) return false;
-    obj = obj.__proto__;
-  }
-}
-// 数组面积
-const maxArea = height => {
-  let [m, n] = [0, height.length - 1];
-  let maxArea = 0;
-  // 若m=n，则面积为0，所以不取等于
-  while (m < n) {
-    // 当前有效面积的高
-    const h = Math.min(height[m], height[n]);
-    // 当前面积
-    const area = (n - m) * h;
-    // 更新最大面积
-    maxArea = Math.max(maxArea, area);
-    // 更新指针
-    if (height[m] < height[n]) {
-      // 左指针对应的值小，左指针右移
-      m++;
-    } else {
-      // 右指针对应的值小，右指针左移
-      n--;
-    }
-  }
-  return maxArea;
-};
 var arr = [
   { id: 6, name: "部门1", pid: 0 },
   { id: 1, name: "部门1", pid: 0 },
