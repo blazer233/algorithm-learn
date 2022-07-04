@@ -36,7 +36,7 @@ const arr = [
   { id: 2, name: "部门2", pid: 1 },
   { id: 3, name: "部门3", pid: 1 },
   { id: 4, name: "部门4", pid: 3 },
-  { id: 5, name: "部门5", pid: 4 }
+  { id: 5, name: "部门5", pid: 4 },
 ];
 const dataTotree = arr => {};
 //数组转二叉树
@@ -55,27 +55,7 @@ const findKthLargest = function (nums, k) {
   }
   return nums[nums.length - k];
 };
+const threeSum = nums => {};
 // 数组面积
-const maxArea = height => {
-  let [m, n] = [0, height.length - 1];
-  let maxArea = 0;
-  // 若m=n，则面积为0，所以不取等于
-  while (m < n) {
-    // 当前有效面积的高
-    const h = Math.min(height[m], height[n]);
-    // 当前面积
-    const area = (n - m) * h;
-    // 更新最大面积
-    maxArea = Math.max(maxArea, area);
-    // 更新指针
-    if (height[m] < height[n]) {
-      // 左指针对应的值小，左指针右移
-      m++;
-    } else {
-      // 右指针对应的值小，右指针左移
-      n--;
-    }
-  }
-  return maxArea;
-};
+const maxArea = height => {};
 class PubSub {}
