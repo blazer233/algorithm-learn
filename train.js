@@ -58,4 +58,5 @@ const findKthLargest = function (nums, k) {
 const threeSum = nums => {};
 // 数组面积
 const maxArea = height => {};
+class MinHeap {}
 class PubSub {}

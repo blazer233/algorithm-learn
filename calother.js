@@ -129,7 +129,7 @@ var isValid = function (s) {
   let map = {
     "{": "}",
     "(": ")",
-    "[": "]"
+    "[": "]",
   };
   let stack = [];
   for (let i of s) {
@@ -181,6 +181,7 @@ function promiseRace(arr) {
   });
 }
 /**
+ * 跳跃游戏
  * https://leetcode.cn/problems/jump-game/
 1. 使用一个变量保存当前可到达的最大位置
 2. 时刻更新最大位置
@@ -372,16 +373,22 @@ console.log(
   spiraltestOrder([
     [1, 2, 3],
     [4, 5, 6],
-    [7, 8, 9]
+    [7, 8, 9],
   ])
 );
+
+// 实现防止重复发送请求
+const firstPromise =
+  (fn, p = null) =>
+  (...arg) =>
+    p ? p : (p = fn(...arg).finally(() => (p = null)));
 var arr = [
   { id: 6, name: "部门1", pid: 0 },
   { id: 1, name: "部门1", pid: 0 },
   { id: 2, name: "部门2", pid: 1 },
   { id: 3, name: "部门3", pid: 1 },
   { id: 4, name: "部门4", pid: 3 },
-  { id: 5, name: "部门5", pid: 4 }
+  { id: 5, name: "部门5", pid: 4 },
 ];
 function dataTotree(arr) {
   const res = [];
