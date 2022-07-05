@@ -72,7 +72,6 @@ class MinHeap {
 const findKthLargest = (nums, k) => {
   const h = new MinHeap();
   nums.forEach(i => {
-    debugger;
     h.insert(i);
     if (h.size() > k) h.pop();
   });

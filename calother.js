@@ -28,8 +28,10 @@ const missingNumber = function (nums) {
   return l;
 };
 
-/**最长不重复字符串 */
-
+/**
+ * 无重复的最长子串
+ * https://leetcode.cn/problems/longest-substring-without-repeating-characters/
+ */
 var lengthOfLongestSubstring = str => {
   let res = "";
   let num = 0;
@@ -45,31 +47,25 @@ var lengthOfLongestSubstring = str => {
   }
   return { num, res };
 };
-var lengthOfLongestSubstring = function (s) {
-  let map = new Map(),
-    max = 0;
-  for (let i = 0, j = 0; j < s.length; j++) {
-    if (map.has(s[j])) {
-      i = Math.max(map.get(s[j]) + 1, i);
-    }
-    max = Math.max(max, j - i + 1);
-    map.set(s[j], j);
-  }
-  return max;
-};
 
-//数组中的第K个最大元素
-var findKthLargest = function (nums, k) {
-  for (let i = 0; i < k; i++) {
-    for (let j = 0; j < nums.length - i - 1; j++) {
-      if (nums[j] > nums[j + 1]) {
-        [nums[j + 1], nums[j]] = [nums[j], nums[j + 1]];
-      }
+/**最长公共前缀
+ * https://leetcode.cn/problems/longest-common-prefix/
+ */
+const longestCommonPrefix = strs => {
+  strs.sort();
+  const [start, end] = [strs[0], strs[strs.length - 1]];
+  let count = 0;
+  for (let i = 0; i < start.length; i++) {
+    if (start[i] === end[i]) {
+      count++;
+    } else {
+      break;
     }
   }
-  console.log(nums);
-  return nums[nums.length - k];
+
+  return start.slice(0, count);
 };
+longestCommonPrefix(["flower", "flow", "flight"]);
 
 // 实现new
 const myNew = (fn, arg) => {
@@ -287,23 +283,38 @@ const debounce = (fn, wait) => {
     }, wait);
   };
 };
-
-//最长连续不重复字符串
-var calStr = str => {
-  let res = "";
-  let num = 0;
-  let i = 0;
-  while (i < str.length) {
-    num = Math.max(res.length, num);
-    if (res.includes(str[i])) {
-      res = res.slice(1);
-    } else {
-      res += str[i];
+/**
+ * 罗马数字转整数
+ * https://link.juejin.cn/?target=https%3A%2F%2Fleetcode-cn.com%2Fproblems%2Froman-to-integer%2F
+ */
+var mappingRoman = {
+  I: 1,
+  V: 5,
+  X: 10,
+  L: 50,
+  C: 100,
+  D: 500,
+  M: 1000,
+  IV: 4,
+  IX: 9,
+  XL: 40,
+  XC: 90,
+  CD: 400,
+  CM: 900,
+};
+let romanToInt = str => {
+  let k = "";
+  for (let i = 0; i < str.length; i++) {
+    let ss = `${str[i]}${str[i + 1]}`;
+    if (mappingRoman[ss]) {
+      k += mappingRoman[ss];
       i++;
+    } else {
+      k += mappingRoman[str[i]];
     }
   }
-  return { num, res };
 };
+romanToInt("MCMXCIV");
 
 async function asyncPool(poolLimit, iterable, iteratorFn) {
   // 用于保存所有异步请求
