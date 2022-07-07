@@ -12,7 +12,9 @@ const deepClone = (target, map = new Map()) => {};
 const lengthOfLIS = nums => {};
 //最长不重复字符串
 const lengthOfLongestSubstring = str => {};
-
+//回文链表
+//https://leetcode.cn/problems/palindrome-linked-list/
+const isPalindrome = function (head) {};
 //dfs 是否为对称二叉树
 const isSymmetric = root => {};
 //dfs 翻转二叉树
@@ -32,7 +34,6 @@ function myInstanceof(obj, fn) {}
 Function.prototype.myCall = function (...rest) {};
 // 实现bind
 Function.prototype.myBind = function (...rest) {};
-
 // 链表删除倒数第 n 个节点
 const removeNthFromEnd = (head, n) => {};
 // 数组面积

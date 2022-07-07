@@ -50,7 +50,7 @@ asyncPool(idArray, request1, 3);
 const Scheduler2 = (ajax = request2, limit = 3) => {
   const queue = [];
   let idx = 0;
-  const run = async () => {
+  const run = () => {
     if (!queue.length || idx == limit) return;
     const [param, reslove, reject] = queue.shift();
     idx += 1;

@@ -47,6 +47,7 @@ var hasCycle = head => {
   }
   return false; //循环完成发现没有重复节点，说明没环
 };
+
 /**
  * 合并两个有序链表
  * https://leetcode.cn/problems/merge-two-sorted-lists/
@@ -73,10 +74,7 @@ var mergeTwoLists = function (list1, list2) {
 /**
  * 删除链表的倒数第 N 个结点
  * https://leetcode.cn/problems/remove-nth-node-from-end-of-list/
- *
- *
  */
-
 var removeNthFromEnd = function (head, n) {
   let [fast, slow] = [head, head];
   while (n--) fast = fast.next;

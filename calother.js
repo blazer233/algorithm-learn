@@ -117,7 +117,11 @@ function myInstanceof(obj, fn) {
     obj = obj.__proto__;
   }
 }
-// 数组面积
+//
+/**
+ * 数组面积
+ * https://leetcode-cn.com/problems/container-with-most-water
+ */
 const maxArea = arr => {
   let [l, r] = [0, arr.length - 1];
   let maxArea = 0;
@@ -141,6 +145,10 @@ const maxArea = arr => {
   return maxArea;
 };
 
+/**
+ * 有效的括号
+ * https://leetcode-cn.com/problems/valid-parentheses
+ */
 var isValid = function (s) {
   let map = {
     "{": "}",
