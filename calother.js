@@ -11,8 +11,8 @@ function search(arr, key) {
   return -1;
 }
 /**
- * https://leetcode.cn/problems/que-shi-de-shu-zi-lcof/
  * n-1中缺失的数字
+ * https://leetcode.cn/problems/que-shi-de-shu-zi-lcof/
  */
 const missingNumber = function (nums) {
   let [l, r] = [0, nums.length - 1];
@@ -26,6 +26,26 @@ const missingNumber = function (nums) {
     }
   }
   return l;
+};
+
+/**
+ * 在排序数组中查找元素的第一个和最后一个位置
+ * https://leetcode.cn/problems/find-first-and-last-position-of-element-in-sorted-array/
+ */
+var searchRange = function (nums, target) {
+  let [l, r, mid] = [0, nums.length - 1];
+  //二分查找target
+  while (l <= r) {
+    mid = Math.floor((r + l) / 2);
+    if (nums[mid] === target) break;
+    if (nums[mid] > target) r = mid - 1;
+    else l = mid + 1;
+  }
+  if (l > r) return [-1, -1];
+  let i = (j = mid);
+  while (nums[i] === nums[i - 1]) i--; //向左尝试找相同的元素
+  while (nums[j] === nums[j + 1]) j++; //向右尝试找相同的元素
+  return [i, j];
 };
 
 /**
@@ -45,7 +65,7 @@ var lengthOfLongestSubstring = str => {
       i++;
     }
   }
-  return { num, res };
+  return num;
 };
 
 /**最长公共前缀
@@ -62,10 +82,8 @@ const longestCommonPrefix = strs => {
       break;
     }
   }
-
   return start.slice(0, count);
 };
-longestCommonPrefix(["flower", "flow", "flight"]);
 
 // 实现new
 const myNew = (fn, arg) => {
@@ -74,6 +92,7 @@ const myNew = (fn, arg) => {
   fn.apply(tmp, arg);
   return tmp;
 };
+
 // 实现call
 Function.prototype.myCall = function (...rest) {
   let tmp = rest[0] || window;
@@ -90,6 +109,7 @@ Function.prototype.myBind = function (...rest) {
   return (...rests) => self.call(tmp, [...args, ...rests.slice(1)]);
 };
 
+// 实现Instanceof
 function myInstanceof(obj, fn) {
   while (true) {
     if (obj.__proto__ === fn.prototype) return true;
@@ -98,24 +118,24 @@ function myInstanceof(obj, fn) {
   }
 }
 // 数组面积
-const maxArea = height => {
-  let [m, n] = [0, height.length - 1];
+const maxArea = arr => {
+  let [l, r] = [0, arr.length - 1];
   let maxArea = 0;
   // 若m=n，则面积为0，所以不取等于
-  while (m < n) {
+  while (l < r) {
     // 当前有效面积的高
-    const h = Math.min(height[m], height[n]);
+    const h = Math.min(arr[l], arr[r]);
     // 当前面积
-    const area = (n - m) * h;
+    const area = (r - l) * h;
     // 更新最大面积
     maxArea = Math.max(maxArea, area);
     // 更新指针
-    if (height[m] < height[n]) {
+    if (arr[l] < arr[r]) {
       // 左指针对应的值小，左指针右移
-      m++;
+      l++;
     } else {
       // 右指针对应的值小，右指针左移
-      n--;
+      r--;
     }
   }
   return maxArea;
@@ -131,9 +151,7 @@ var isValid = function (s) {
   for (let i of s) {
     if (map[i]) {
       stack.push(i);
-      continue;
-    }
-    if (map[stack.pop()] !== i) return false;
+    } else if (map[stack.pop()] !== i) return false;
   }
   return stack.length === 0;
 };
@@ -192,6 +210,28 @@ var canJump = function (nums) {
   return true;
 };
 
+/**
+ * 反转字符串 II
+ * https://leetcode.cn/problems/reverse-string-ii/
+ */
+
+const reverseStr = (s, k) => {
+  const arrS = s.split("");
+  const len = arrS.length;
+  const reverseArr = (arr, left, right) => {
+    while (left < right) {
+      [arr[left], arr[right]] = [arr[right], arr[left]];
+      left++;
+      right--;
+    }
+  };
+  for (let i = 0; i < len; i += 2 * k) {
+    // 反转该区间
+    reverseArr(arrS, i, i + k - 1);
+  }
+  return arrS.join("");
+};
+
 /**深拷贝 */
 
 function deepClone1(target, map = new WeakMap()) {
@@ -240,7 +280,6 @@ const reDfs = root => {
 };
 
 /**收集发布 */
-
 class PubSub {
   constructor() {
     this.events = {};

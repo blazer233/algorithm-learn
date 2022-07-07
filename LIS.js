@@ -16,13 +16,10 @@ const lengthOfLIS = nums => {
     } else {
       // s[s.findIndex(s => s >= i)] = i;
       let [l, r] = [0, res.length - 1];
-      while (r > l) {
+      while (r >= l) {
         let mid = Math.floor((r + l) / 2);
-        if (res[mid] < i) {
-          l = mid + 1;
-        } else {
-          r = l;
-        }
+        if (res[mid] >= i) r = mid - 1;
+        if (res[mid] < i) l = mid + 1;
       }
       res[l] = i;
     }

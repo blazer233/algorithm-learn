@@ -3,40 +3,40 @@ const search = (arr, k) => {};
 // promise.All
 const promiseAll = arr => {};
 // 所有路径遍历
-const binaryTreePathsBt = (root, target) => {};
-// 左子节点之和
-var sumOfLeftLeavess = root => {};
+const binaryTreePathsBt = root => {};
+// 三数之和
+const threeSum = nums => {};
 // 深拷贝
-const deepClone = (target, map = new WeakMap()) => {};
-// Promise.Race
-const promiseRace = arr => {};
+const deepClone = (target, map = new Map()) => {};
 // 最长递增子序列
 const lengthOfLIS = nums => {};
-//Proxy 劫持
-const proxyMap = obj => {};
 //最长不重复字符串
-const onlyStr = str => {};
+const lengthOfLongestSubstring = str => {};
+
 //dfs 是否为对称二叉树
 const isSymmetric = root => {};
 //dfs 翻转二叉树
 const invertTree = tree => {};
+// 最小堆
+class MinHeap {}
+// 验证字符串括号
+const isValid = function (s) {};
 //数组转二叉树
 const creatTree = val => ({ val, left: "", right: "" });
 const array2binary = arr => {};
 // promise 并发
 const asyncPool = async (iteratorFn, limit) => {};
-// promise 并发指定数组
-const asyncPoolArr = async (arr, iteratorFn, limit) => {};
-// 最长不重复子串 (二分法)
-const lengthOfLongestSubstring = str => {};
-// 三数之和
-const threeSum = nums => {};
+// 实现new
+function myInstanceof(obj, fn) {}
+// 实现call
+Function.prototype.myCall = function (...rest) {};
+// 实现bind
+Function.prototype.myBind = function (...rest) {};
+
 // 链表删除倒数第 n 个节点
 const removeNthFromEnd = (head, n) => {};
 // 数组面积
-const maxArea = height => {};
-// 最小堆
-class MinHeap {}
+const maxArea = arr => {};
 // 事件监听
 class PubSub {}
 //数组转树
@@ -49,11 +49,3 @@ const arr = [
   { id: 5, name: "部门5", pid: 4 },
 ];
 const dataTotree = arr => {};
-// 异步队列
-const queue = list => ctx => {
-  let func = idx => {
-    if (!list[idx]) return Promise.resolve();
-    Promise.resolve(list[idx](ctx, func.bind(null, idx + 1)));
-  };
-  func(0);
-};
