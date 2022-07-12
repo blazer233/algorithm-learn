@@ -16,7 +16,16 @@ const lengthOfLongestSubstring = str => {};
 //https://leetcode.cn/problems/palindrome-linked-list/
 const isPalindrome = function (head) {};
 //dfs 是否为对称二叉树
-const isSymmetric = root => {};
+const isSymmetric = root => {
+  if (!root) return true;
+  const dfs = (l, r) => {
+    if (!l.val && !r.val) return true;
+    if (!l.val || !r.val) return false;
+    if (l.val !== r.val) return false;
+    return dfs(l.left, r.right) && dfs(l.right, r.left);
+  };
+  return dfs(root.left, root.right);
+};
 //dfs 翻转二叉树
 const invertTree = tree => {};
 // 最小堆
