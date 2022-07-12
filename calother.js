@@ -363,33 +363,92 @@ let romanToInt = str => {
 };
 romanToInt("MCMXCIV");
 
-async function asyncPool(poolLimit, iterable, iteratorFn) {
-  // 用于保存所有异步请求
-  const ret = [];
-  // 用户保存正在进行的请求
-  const executing = new Set();
-  for (const item of iterable) {
-    // 构造出请求 Promise
-    const p = Promise.resolve().then(() => iteratorFn(item, iterable));
-    ret.push(p);
-    executing.add(p);
-    // 请求执行结束后从正在进行的数组中移除
-    const clean = () => executing.delete(p);
-    p.then(clean).catch(clean);
-    // 如果正在执行的请求数大于并发数，就使用 Promise.race 等待一个最快执行完的请求
-    if (executing.size >= poolLimit) {
-      await Promise.race(executing);
+/**
+ * 笛卡尔二维数组的排列组合
+ * [
+    ["A", "B"],
+    ["a", "b"],
+    [1, 2],
+   ]
+ */
+function allGroups(data = []) {
+  const multi = (arr, list) => {
+    const res = [];
+    if (!arr.length) return list;
+    if (!list.length) return arr;
+    for (const i of arr) {
+      for (const j of list) {
+        res.push(`${i}${j}`);
+      }
     }
-  }
-  // 返回所有结果
-  return Promise.all(ret);
+    return res;
+  };
+  return data.reduce(multi, []);
 }
 
-// 使用方法
-const timeout = i => new Promise(resolve => setTimeout(resolve(i), i));
-asyncPool(2, [1000, 5000, 3000, 2000], timeout).then(results => {
-  console.log(results);
-});
+//输入：digits = "23"
+//输出：["ad","ae","af","bd","be","bf","cd","ce","cf"]
+
+function allGroups(data = "") {
+  const map = {
+    //建立电话号码和字母的映射关系
+    2: "abc",
+    3: "def",
+    4: "ghi",
+    5: "jkl",
+    6: "mno",
+    7: "pqrs",
+    8: "tuv",
+    9: "wxyz",
+  };
+  if (!data) return [];
+  if (data.length == 1) return map[data[0]].split("");
+  if (!data.length) return [];
+  const multi = (arr, list) => {
+    const res = [];
+    if (!arr.length) return list;
+    if (!list.length) return arr;
+    for (const i of arr) {
+      for (const j of list) {
+        res.push(`${i}${j}`);
+      }
+    }
+    return res;
+  };
+  let info = data.split("").map(i => map[i]);
+  return info.reduce(multi, []);
+}
+var letterCombinations = digits => {
+  if (digits.length == 0) return [];
+  const res = [];
+  const map = {
+    //建立电话号码和字母的映射关系
+    2: "abc",
+    3: "def",
+    4: "ghi",
+    5: "jkl",
+    6: "mno",
+    7: "pqrs",
+    8: "tuv",
+    9: "wxyz",
+  };
+
+  const dfs = (curStr, i) => {
+    //curStr是递归每一层的字符串，i是扫描的指针
+    if (i > digits.length - 1) {
+      //边界条件，递归的出口
+      res.push(curStr); //其中一个分支的解推入res
+      return; //结束递归分支，进入另一个分支
+    }
+    const letters = map[digits[i]]; //取出数字对应的字母
+    for (const l of letters) {
+      //进入不同字母的分支
+      dfs(curStr + l, i + 1); //参数传入新的字符串，i右移，继续递归
+    }
+  };
+  dfs("", 0); // 递归入口，传入空字符串，i初始为0的位置
+  return res;
+};
 
 // 螺旋矩阵
 var spiralOrder = function (matrix) {

@@ -28,6 +28,8 @@ const isSymmetric = root => {
 };
 //dfs 翻转二叉树
 const invertTree = tree => {};
+// 笛卡尔二维数组的排列组合
+const allGroups = data => {};
 // 最小堆
 class MinHeap {}
 // 验证字符串括号
