@@ -22,7 +22,7 @@ export default class MinHeap {
   shiftUp(index) {
     if (!index) return;
     const parentIndex = this.getParentIndex(index);
-    if (compare(this.heap[parentIndex], this.heap[index]) > 0) {
+    if (this.heap[index] > this.heap[parentIndex]) {
       this.swap(parentIndex, index);
       this.shiftUp(parentIndex);
     }
@@ -30,11 +30,11 @@ export default class MinHeap {
   shiftDown(index) {
     const leftIndex = this.getleftIndex(index);
     const rightIndex = this.getrightIndex(index);
-    if (compare(this.heap[leftIndex], this.heap[index]) > 0) {
+    if (this.heap[index] > this.heap[leftIndex]) {
       this.swap(leftIndex, index);
       this.shiftDown(leftIndex);
     }
-    if (compare(this.heap[rightIndex], this.heap[index]) > 0) {
+    if (this.heap[index] > this.heap[rightIndex]) {
       this.swap(rightIndex, index);
       this.shiftDown(rightIndex);
     }
@@ -55,9 +55,4 @@ export default class MinHeap {
   size() {
     return this.heap.length;
   }
-}
-function compare(a, b) {
-  //   return a - b;
-  const diff = a.sortIndex - b.sortIndex;
-  return diff !== 0 ? diff : a.id - b.id;
 }
