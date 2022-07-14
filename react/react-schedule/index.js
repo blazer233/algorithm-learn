@@ -2,14 +2,15 @@ import MinHeap from "./heap";
 const workMinHeap = new MinHeap();
 const channel = new MessageChannel();
 channel.port1.onmessage = workLoop;
-let id = 0;
+export const getCurrntTime = () => performance.now();
+let taskIdCounter = 0;
 
 export const scheduleCallback = callback => {
   const currentTime = getCurrntTime();
   const timeout = -1;
   const expirtationTime = currentTime - timeout;
   workMinHeap.insert({
-    id: id++,
+    id: taskIdCounter++,
     callback,
     expirtationTime,
     sortIndex: expirtationTime,
@@ -27,7 +28,4 @@ function workLoop() {
     workMinHeap.pop();
     currentTask = workMinHeap.peek();
   }
-}
-function getCurrntTime() {
-  return performance.now();
 }

@@ -1,0 +1,4 @@
+react:
+  requestAnimationFrame和postMessage来模拟实现的requestidlecallback. 工作原理是调度requestAnimationFrame，存储帧开始的时间，然后调度postMessage，后者在绘制后进行调度。
+
+该包主要流程是把所有任务通过双向链表连接起来, 通过requestAnimationFrame来在浏览器每帧的空闲时间循环处理所有任务, 直到链表为空为止.
