@@ -16,16 +16,7 @@ const lengthOfLongestSubstring = str => {};
 //https://leetcode.cn/problems/palindrome-linked-list/
 const isPalindrome = function (head) {};
 //dfs 是否为对称二叉树
-const isSymmetric = root => {
-  if (!root) return true;
-  const dfs = (l, r) => {
-    if (!l.val && !r.val) return true;
-    if (!l.val || !r.val) return false;
-    if (l.val !== r.val) return false;
-    return dfs(l.left, r.right) && dfs(l.right, r.left);
-  };
-  return dfs(root.left, root.right);
-};
+const isSymmetric = root => {};
 //dfs 翻转二叉树
 const invertTree = tree => {};
 // 笛卡尔二维数组的排列组合
@@ -52,15 +43,16 @@ const maxArea = arr => {};
 // 事件监听
 class PubSub {}
 //数组转树
-const arr = [
-  { id: 6, name: "部门1", pid: 0 },
-  { id: 1, name: "部门1", pid: 0 },
-  { id: 2, name: "部门2", pid: 1 },
-  { id: 3, name: "部门3", pid: 1 },
-  { id: 4, name: "部门4", pid: 3 },
-  { id: 5, name: "部门5", pid: 4 },
-];
-const dataTotree = arr => {};
+const dataTotree = (
+  arr = [
+    { id: 6, name: "部门1", pid: 0 },
+    { id: 1, name: "部门1", pid: 0 },
+    { id: 2, name: "部门2", pid: 1 },
+    { id: 3, name: "部门3", pid: 1 },
+    { id: 4, name: "部门4", pid: 3 },
+    { id: 5, name: "部门5", pid: 4 },
+  ]
+) => {};
 //最近公共祖先
 var lowestCommonAncestor = function (root, p, q) {
   if (!root || root === p || root === q) return root;

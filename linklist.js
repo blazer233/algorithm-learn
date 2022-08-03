@@ -9,7 +9,7 @@
 /**回文链表
  * https://leetcode.cn/problems/palindrome-linked-list/
  */
-var isPalindrome = function (head) {
+let isPalindrome = function (head) {
   const str = "";
   while (head) {
     str += head.val;
@@ -25,7 +25,7 @@ var isPalindrome = function (head) {
  *反转链表
  *https://leetcode.cn/problems/reverse-linked-list/
  */
-var reverseList = function (head) {
+let reverseList = function (head) {
   let [prev, curr, next] = [null, head, null];
   while (curr) {
     next = curr.next; //next向后移动一位
@@ -38,7 +38,7 @@ var reverseList = function (head) {
  * 环形链表
  * https://leetcode.cn/problems/linked-list-cycle/
  */
-var hasCycle = head => {
+let hasCycle = head => {
   let map = new Map();
   while (head) {
     if (map.has(head)) return true; //如果当前节点在map中存在就说明有环
@@ -52,7 +52,7 @@ var hasCycle = head => {
  * 合并两个有序链表
  * https://leetcode.cn/problems/merge-two-sorted-lists/
  */
-var mergeTwoLists = function (list1, list2) {
+let mergeTwoLists = function (list1, list2) {
   // 结束条件，两个结点任意一个为null，则返回另外一个
   if (!list1) return list2;
   if (!list2) return list1;
@@ -75,7 +75,7 @@ var mergeTwoLists = function (list1, list2) {
  * 删除链表的倒数第 N 个结点
  * https://leetcode.cn/problems/remove-nth-node-from-end-of-list/
  */
-var removeNthFromEnd = function (head, n) {
+let removeNthFromEnd1 = function (head, n) {
   let [fast, slow] = [head, head];
   while (n--) fast = fast.next;
   if (!fast) return head.next;
@@ -87,7 +87,7 @@ var removeNthFromEnd = function (head, n) {
   return head;
 };
 
-var removeNthFromEnd = function (head, n) {
+let removeNthFromEnd2 = function (head, n) {
   // 将 cur 指向 head 的第 n + 1 个节点
   let cur = head;
   while (n--) cur = cur.next;
@@ -120,7 +120,7 @@ var removeNthFromEnd = function (head, n) {
      如题目中的例1删除4,而slow刚好停在4
  */
 
-var removeNthFromEnd = function (head, n) {
+let removeNthFromEnd = function (head, n) {
   let dummy = {};
   dummy.next = head;
   let fast = dummy;
@@ -141,8 +141,67 @@ var removeNthFromEnd = function (head, n) {
  */
 const array2list = arr => {
   let nodes = arr.map(i => ({ val: i, next: null }));
-  for (var i = 0; i < arr.length - 1; i++) {
+  for (let i = 0; i < arr.length - 1; i++) {
     nodes[i].next = nodes[i + 1];
   }
   return nodes[0];
 };
+
+/*************************链表*****************************/
+
+// 环状链表
+class LoopList {
+  constructor() {
+    this.head = this.ListNode();
+  }
+  ListNode(val, next) {
+    return { val, next };
+  }
+  //查找尾节点
+  findLast() {
+    let currNode = this.head;
+    while (currNode.next !== this.head) currNode = currNode.next;
+    return currNode;
+  }
+  //查找元素
+  find(ele) {
+    let currNode = this.head;
+    while (currNode.val != ele) {
+      currNode = currNode.next;
+      if (currNode == this.head) return null;
+    }
+    return currNode;
+  }
+  //插入
+  insert(ele, item) {
+    if (!this.head.next) {
+      this.head.next = this.head;
+    } else {
+      const newNode = this.ListNode(ele);
+      const current = this.find(item) || this.findLast();
+      newNode.next = current.next;
+      current.next = newNode;
+    }
+    current = newNode;
+  }
+  //删除
+  remove(ele) {
+    let prevNode = this.findPrevious(ele);
+    if (prevNode.next != this.head) {
+      prevNode.next = prevNode.next.next;
+    }
+  }
+  //查找某一节点的前一个节点(前驱)
+  findPrevious(ele) {
+    let currNode = this.head;
+    while (currNode.next != this.head && currNode.next.val != ele) {
+      currNode = currNode.next;
+    }
+    return currNode;
+  }
+  //修改某一节点的数据
+  edit(ele, newEle) {
+    let val = this.find(ele);
+    val.val = newEle;
+  }
+}

@@ -66,3 +66,68 @@ var threeSum = function (nums) {
   // 13、执行完循环，最后返回结果数组 res
   return res;
 };
+
+/**
+ * 最长回文子串
+ * https://leetcode.cn/problems/longest-palindromic-substring/submissions/
+ * @param {string} s
+ * @returns {string}
+ */
+var longestPalindrome = function (s) {
+  let [i, res] = [0, ""];
+  while (i < s.length) {
+    findMax(i, i);
+    findMax(i, i + 1);
+    i++;
+  }
+  function findMax(l, r) {
+    while (s[l] == s[r] && l > -1 && r < s.length) {
+      l--;
+      r++;
+    }
+    const item = s.slice(l + 1, r);
+    if (item.length > res.length) res = item;
+  }
+  return res;
+};
+longestPalindrome("babbccad");
+
+/**
+ * 无重复的最长子串
+ * https://leetcode.cn/problems/longest-substring-without-repeating-characters/
+ */
+var lengthOfLongestSubstring = function (str) {
+  if (str.length <= 1) return str.length;
+  let [l, r, max, temp] = [0, 1, 0];
+  while (r < str.length) {
+    temp = str.slice(l, r);
+    if (temp.includes(str[r])) {
+      l++;
+      continue;
+    } else {
+      r++;
+    }
+    const len = r - l;
+    if (len > max) max = len;
+  }
+  return max;
+};
+/**
+ * 盛最多水的容器
+ * https://leetcode.cn/problems/container-with-most-water/
+ */
+const maxArea = arr => {
+  let [l, r] = [0, arr.length - 1];
+  let result = 0;
+  while (l < r) {
+    let hight = Math.min(arr[l], arr[r]);
+    let area = hight * (r - l);
+    result = Math.max(result, area);
+    if (arr[r] > arr[l]) {
+      l++;
+    } else {
+      r--;
+    }
+  }
+  return result;
+};

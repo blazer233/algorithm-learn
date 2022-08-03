@@ -53,20 +53,36 @@ var searchRange = function (nums, target) {
  * https://leetcode.cn/problems/longest-substring-without-repeating-characters/
  */
 var lengthOfLongestSubstring = str => {
-  let res = "";
-  let num = 0;
-  let i = 0;
+  let [res, num, i] = ["", 0, 0];
   while (i < str.length) {
-    num = Math.max(res.length, num);
     if (res.includes(str[i])) {
       res = res.slice(1);
     } else {
       res += str[i];
+      num = Math.max(res.length, num);
       i++;
     }
   }
   return num;
 };
+
+var lengthOfLongestSubstring = function (str) {
+  if (str.length <= 1) return str.length;
+  let [l, r, max, temp] = [0, 1, 0];
+  while (r < str.length) {
+    temp = str.slice(l, r);
+    if (temp.includes(str[r])) {
+      l++;
+      continue;
+    } else {
+      r++;
+    }
+    const len = r - l;
+    if (len > max) max = len;
+  }
+  return max;
+};
+console.log(lengthOfLongestSubstring("pwwkew"));
 
 /**最长公共前缀
  * https://leetcode.cn/problems/longest-common-prefix/
@@ -522,3 +538,73 @@ function dataTotree(arr) {
   return res;
 }
 console.log(dataTotree(arr));
+
+var permute = function (nums) {
+  const result = [];
+  const book = {};
+  const res = [];
+  // 深度优先遍历，排列组合，思路类似于有n个萝卜，填k个坑
+  // 步骤示意图：
+  // dfs(0) 1 -> dfs(1) -> 由于萝卜1已被用，所以1不能用，跳过，填2，-> dfs(2) -> 和前面相似，这里只能填3-> 最后一步，把当前结果填到集合；
+  // 回溯到dfs(1), 这里还可以填3，然后再填2，最后得到1-> 3 -> 2 。把当前结果填到集合；
+  // 第二个坑位回溯完，然后再回溯到第一个坑位
+  // 第一个坑位可以先填2，
+  // 然后依次得到： 2->1->3， 2->1->3
+  // 。。。
+  function dfs(step, targetArr) {
+    const total = targetArr.length;
+    // 当轮询完所有坑位时，将前面轮询的结果放入最后的集合中
+    if (step === total) {
+      result.push(res.slice());
+      return;
+    }
+    for (let i = 0; i < total; i++) {
+      const target = targetArr[i];
+      if (!book[target]) {
+        res[step] = target;
+        // 标记：当前坑位已经被占用
+        book[target] = 1;
+        dfs(step + 1, targetArr);
+        // 当前轮次已排完，清除标记
+        book[target] = 0;
+      }
+    }
+  }
+  dfs(0, nums);
+  return result;
+};
+
+console.log(permute([1, 2, 3]));
+
+/**
+ * 转数字
+ */
+function numberToChinese(num) {
+  var AA = ["零", "一", "二", "三", "四", "五", "六", "七", "八", "九", "十"];
+  var BB = ["", "十", "百", "千", "万", "亿", "点", ""];
+  let [str, k, res] = [`${num}`, 0, ""];
+  for (var i = str.length - 1; i >= 0; i--) {
+    switch (k) {
+      case 0:
+        res = BB[7] + res;
+        break;
+      case 4:
+        if (!new RegExp("0{4}//d{" + (str.length - i - 1) + "}$").test(str))
+          res = BB[4] + res;
+        break;
+      case 8:
+        res = BB[5] + res;
+        BB[7] = BB[5];
+        k = 0;
+        break;
+    }
+    if (k % 4 == 2 && str[i + 2] != 0 && str[i + 1] == 0) res = AA[0] + res;
+    if (str[i] != 0) res = AA[str[i]] + BB[k % 4] + res;
+    k++;
+  }
+  if (res == "一十") re = "十";
+  if (res.match(/^一/) && re.length == 3) res = res.replace("一", "");
+  return res;
+}
+let numTem = 112341234;
+console.log(numberToChinese(numTem));

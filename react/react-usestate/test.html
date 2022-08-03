@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        class listHandle {
+            constructor() {
+                this.list = null
+                this.work = null
+                this.mount = true
+            }
+            useState(init) {
+                let item = this.mountWorkInProgressHook()
+                item.init = init
+                let base = item.init
+                if (item.queue.pending) {
+                    let firstUpdate = item.queue.pending.next; //拿到第一个update
+                    do {
+                        // 执行update action
+                        const action = firstUpdate.action; //每一次执行的函数，即更新state的具体操作例如： setCount(count => count + 1)
+                        base = action(baseState); //拿到函数执行之后的新state，新的状态又被作为老的状态存储，即下一次操作的目标state
+                        firstUpdate = firstUpdate.next; //更新执行下一个setCount，firstUpdate指向他的next
+                    } while (firstUpdate !== item.queue.pending.next); //每次触发的Update只要不是第一个Update就跳出，否则循环执行
+                    item.queue.pending = null; // 清空queue.pending链表
+                    item.init = baseState; //将update action执行完后的state作为memoizedState
+                }
+                return [base, this.dispatch]
+            }
+            updateWorkInProgressHook() {
+                let curHook = this.work;
+                this.work = this.work.next;
+                return curHook;
+            }
+            mountWorkInProgressHook() {
+                const item = {
+                    queue: { pending: null },
+                    init: null,
+                    next: null,
+                };
+                if (!this.list) {
+                    this.list = item;
+                } else {
+                    this.work.next = item;
+                }
+                this.work = item;
+                return this.work
+            }
+            dispatch(action) {
+                const item = this.updateWorkInProgressHook()
+                const update = { action, next: null }
+                if (!item.queue.pending) {
+                    update.next = update
+                } else {
+                    update.next = item.queue.pending.next;
+                    item.queue.pending.next = update;
+                }
+                item.queue.pending = update;
+                this.mount = false
+                this.useState()
+            }
+        }
+        let app = new listHandle()
+        let [aa, setaa] = app.useState(1)
+        let [bb, setbb] = app.useState(2)
+        let [cc, setcc] = app.useState(3)
+        console.log(app, aa, )
+        setaa(a => a + 1)
+        console.log(app, aa, )
+    </script>
+</body>
+
+</html>

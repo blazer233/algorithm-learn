@@ -23,16 +23,19 @@ function updateWorkInProgressHook() {
       workInProgressHook = hook = workInProgressHook.next;
     } else {
       // hook0
-      workInProgressHook = hook = currentlyRenderingFiber.memorizedState;
+      hook = currentlyRenderingFiber.memorizedState;
+      workInProgressHook = hook;
     }
   } else {
     // 组件初次渲染
     hook = { memorizedState: null, next: null };
     if (workInProgressHook) {
-      workInProgressHook = workInProgressHook.next = hook;
+      workInProgressHook.next = hook;
+      workInProgressHook = workInProgressHook.next;
     } else {
       // hook0
-      workInProgressHook = currentlyRenderingFiber.memorizedState = hook;
+      currentlyRenderingFiber.memorizedState = hook;
+      workInProgressHook = currentlyRenderingFiber.memorizedState;
     }
   }
 
