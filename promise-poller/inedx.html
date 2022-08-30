@@ -1,0 +1,28 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>setInterval</title>
+</head>
+
+<body>
+</body>
+<!-- <script src="./core.js"></script> -->
+<script src="./setInterval.js"></script>
+<script>
+    // https://blog.csdn.net/chiuwingyan/article/details/80322289
+    const delay = time => new Promise(resolve => setTimeout(resolve, time));
+    id = 0
+    let task = async () => {
+        await delay(200);
+        console.log(++id)
+    };
+    const shouldContinue = (err, res) => {
+        return id < 4
+    }
+    promisePoller(task, 300, { shouldContinue, masterTimeout: 4000, timeout: 500 })
+        .then(res => console.log(res, "pRes")).catch(err => console.log(err, "pErr"))
+</script>
+
+</html>
