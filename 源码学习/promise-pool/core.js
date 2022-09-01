@@ -3,9 +3,7 @@ const request1 = id => {
     //随机一个执行时间
     let time = Math.floor(10000 * Math.random());
     console.log(`id为${id}开始请求,预计执行时间${time / 1000}`);
-    setTimeout(() => {
-      resolve(id);
-    }, time);
+    setTimeout(() => resolve(id), time);
   }).then(id => {
     console.log(`id为${id}的请求进行逻辑处理`);
     return id;

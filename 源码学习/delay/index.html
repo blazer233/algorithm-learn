@@ -1,0 +1,41 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>delay</title>
+</head>
+<body>
+</body>
+<script src="./delay.js"></script>
+<script>
+    // https://github.com/sindresorhus/delay
+    // const task1 = delay(1000)
+    // task1.then(() => console.log('123'))
+
+    // const task2 = delay(100, { value: '🦄' });
+    // task2.then((res) => console.log(res))
+
+    // const task3 = delay.reject(100, { value: '🦄' });
+    // task3.catch((res) => console.log(res))
+
+    // const task4 = delay(1000, { value: 'Done' });
+    // setTimeout(() => {
+    //     task4.clear();
+    // }, 500);
+    // 500s 后执行
+    // task4.then((res) => console.log(res))
+
+    // const abortController = new AbortController();
+    // setTimeout(() => {
+    //     abortController.abort();
+    // }, 500);
+    // delay(1000, { signal: abortController.signal }).catch(err => console.log(error.name))
+
+
+    // const customDelay = delay.createWithTimers({ clearTimeout, setTimeout });
+    // const task5 = customDelay(100, { value: '🦄' });
+    // task5.catch((res) => console.log(res))
+</script>
+
+</html>

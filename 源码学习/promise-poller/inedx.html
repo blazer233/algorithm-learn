@@ -21,7 +21,7 @@
     const shouldContinue = (err, res) => {
         return id < 4
     }
-    promisePoller(task, 300, { shouldContinue, masterTimeout: 4000, timeout: 500 })
+    promisePoller(task, 300, { shouldContinue, msaterTimeout: 4000, timeout: 500 })
         .then(res => console.log(res, "pRes")).catch(err => console.log(err, "pErr"))
 </script>
 

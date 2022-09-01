@@ -49,14 +49,11 @@ var pathSum = function (root, sum) {
   if (!root) return [];
   const statck = [[root, sum, [root.val]]];
   const result = [];
-
   while (statck.length) {
     const [node, num, path] = statck.pop();
-
     if (!node.left && !node.right && node.val === num) {
       result.push(path);
     }
-
     if (node.right) {
       statck.push([node.right, num - node.val, [...path, node.right.val]]);
     }
