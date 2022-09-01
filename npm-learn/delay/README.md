@@ -2,7 +2,7 @@
 
 ![](https://camo.githubusercontent.com/73989ab636e289aea3435248f9a9ce571c7e39f81a47ba02f176b68411167e56/68747470733a2f2f7777772e62696e672e636f6d2f74683f69643d4f48522e426c75654c696e636b69615f454e2d5553373037383738373133335f3139323078313038302e6a70672672663d4c6144696775655f3139323078313038302e6a7067267069643d6870)
 
-> 项目代码：https://github.com/Haixiang6123/my-promise-poller
+> 项目代码：https://github.com/blazer233/algorithm-learn/tree/main/%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0/delay
 >
 >
 > 参考轮子：https://github.com/sindresorhus/delay
