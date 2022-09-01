@@ -20,7 +20,7 @@ const createDelay = setTimeout
 先从上面说的 `createDelay` 的方法开始写起，借助 Promise，我们可以对setTimeout函数进行改良，下面就是把setTimeout()封装成一个返回Promise的sleep()函数：
 
 ```js
-const createDelay =(ms)=>new Promise((resolve) => setTimeout(resolve, ms))
+const createDelay = (ms) => new Promise(resolve => setTimeout(resolve, ms))
 
 // 用法
 // sleep(500).then(() => {
