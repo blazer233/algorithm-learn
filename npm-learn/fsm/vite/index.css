@@ -1,0 +1,55 @@
+body {
+    font-family: "Benton Sans", "Helvetica Neue", helvetica, arial, sans-serif;
+    margin: 2em;
+}
+
+h1 {
+    font-style: italic;
+    color: #373fff;
+}
+
+.state {
+    width: 50px;
+    height: 50px;
+    background: blue;
+}
+
+.state.red {
+    background: red;
+    color: white;
+}
+
+.state.yellow {
+    background: yellow;
+    color: black;
+}
+
+.state.green {
+    background: green;
+    color: white;
+}
+
+button {
+    margin-top: 1rem;
+    font-size: 110%;
+    border: 1px solid tomato;
+    background: transparent;
+}
+
+button[disabled] {
+    border-color: rgb(255, 99, 71, 0.5);
+}
+
+#users {
+    margin-top: 1.5rem;
+}
+
+#users ul {
+    margin: 0;
+    padding-left: 20px;
+}
+
+.loading {
+    font-style: italic;
+    font-weight: 600;
+}
