@@ -1,1 +1,1 @@
-import "./stately/demo1";
+import "./stately";

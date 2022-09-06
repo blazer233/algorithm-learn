@@ -17,7 +17,7 @@ import {
   createMachine,
   interpret,
   reduce,
-} from "../robot";
+} from "./robot";
 
 const context = () => ({ users: [] });
 

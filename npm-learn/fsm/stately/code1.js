@@ -148,7 +148,7 @@ function Stately(statesObject) {
         nextState.name
       );
     }
-
+console.log(nextState, eventName,222)
     stateStore.setMachineState(nextState, eventName);
 
     return eventValue;
