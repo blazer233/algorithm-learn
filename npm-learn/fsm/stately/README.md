@@ -1,6 +1,6 @@
 # 60行代码实现一个fsm有限状态机🎅
 
-![]([image.webp](https://raw.githubusercontent.com/blazer233/algorithm-learn/main/npm-learn/fsm/stately/image.webp))
+![image.webp](https://raw.githubusercontent.com/blazer233/algorithm-learn/main/npm-learn/fsm/stately/image.webp)
 
 > 项目代码：https://github.com/blazer233/algorithm-learn/tree/main/npm-learn/fsm/stately
 >
