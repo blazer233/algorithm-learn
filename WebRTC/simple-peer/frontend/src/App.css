@@ -1,0 +1,49 @@
+.container {
+  display: grid;
+  grid-template-columns: 7fr 3fr;
+  margin-top: 10rem;
+}
+
+
+.video-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  justify-content: center;
+  align-content: center;
+
+  margin-left: 10rem;
+}
+
+
+/* 右侧面板 */
+
+.myId {
+  margin-right: 5rem;
+  border-radius: 5px;
+  background: #c9d6ff;
+  background: linear-gradient(to right,
+      #e2e2e2,
+      #c9d6ff);
+
+  padding: 1rem;
+  display: grid;
+  justify-content: center;
+  align-content: center;
+}
+
+.call-button {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+
+
+.caller {
+  text-align: center;
+  color: #fff;
+}
+
+body {
+  background-image: linear-gradient(to right, #21D4FD 0%, #B721FF 100%);
+
+}
