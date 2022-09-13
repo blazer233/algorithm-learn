@@ -1,4 +1,7 @@
 // https://www.jianshu.com/p/57fd3b5d2f80
+// https://blog.csdn.net/weixin_40425640/article/details/124341142
+// 数据地址 ICE
+// 环境描述数据 SDP
 const creatRtc = (config = {}) => {
   /**
    * 创建呼叫连接
@@ -18,7 +21,7 @@ const creatRtc = (config = {}) => {
     console.log("Added local stream to localPc");
   }
   if (config.send) {
-    // 发起方发送offer信令
+    // 发起方创建和设置连接描述
     peer.createOffer(offerOptions).then(
       desc => {
         const otherPeer = config.otherPeer();
@@ -47,12 +50,13 @@ const creatRtc = (config = {}) => {
       err =>
         console.log("Failed to create session description: " + err.toString())
     );
+    // 双方的信息交互完成sdp。这时候本地生成了自己的播放地址 也就是ice
   }
   peer.addEventListener("iceconnectionstatechange", () =>
     console.log(peer + " ICE state: " + peer.iceConnectionState)
   );
   /**
-   * 创建应答连接
+   * 创建应答连接，监听生成ice，添加到发起方，这样视频就连通了
    */
   peer.addEventListener("icecandidate", e => {
     const otherPeer = config.otherPeer();
