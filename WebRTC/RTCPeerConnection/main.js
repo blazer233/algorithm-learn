@@ -11,6 +11,9 @@ let remoteVideo = document.getElementById("theirs");
 callButton.disabled = true;
 hangupButton.disabled = true;
 startButton.onclick = async () => {
+  /**
+   * 获取本地媒体流
+   */
   console.log("Requesting local stream");
   startButton.disabled = true;
   try {
@@ -54,9 +57,17 @@ callButton.onclick = () => {
     }
   });
 };
-hangupButton.onclick = hangup;
+hangupButton.onclick = () => {
+  console.log("Ending call");
+  localPc.close();
+  remotePc.close();
+  localPc = null;
+  remotePc = null;
+  hangupButton.disabled = true;
+  callButton.disabled = false;
+};
 
-remoteVideo.onresize = function () {
+remoteVideo.onresize = () => {
   console.log(
     "Remote video size changed to " +
       remoteVideo.videoWidth +
@@ -71,13 +82,3 @@ remoteVideo.onresize = function () {
     startTime = null;
   }
 };
-
-function hangup() {
-  console.log("Ending call");
-  localPc.close();
-  remotePc.close();
-  localPc = null;
-  remotePc = null;
-  hangupButton.disabled = true;
-  callButton.disabled = false;
-}
