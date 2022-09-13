@@ -1,9 +1,6 @@
-export default (servers, config) => {
-  const peer = new RTCPeerConnection(servers);
-  const offerOptions = {
-    offerToReceiveAudio: 1,
-    offerToReceiveVideo: 1,
-  };
+const creatRtc = (config = {}) => {
+  const peer = new RTCPeerConnection(null);
+  console.log("Created local peer connection object pc1");
   peer.onicecandidate = e => {
     peer.addIceCandidate(e.candidate).then(
       () => console.log(peer, "-----addIceCandidate success"),
@@ -17,6 +14,8 @@ export default (servers, config) => {
     console.log(peer + " ICE state: " + peer.iceConnectionState);
     console.log("ICE state change event: ", e);
   };
-  peer.createOffer(offerOptions).then(config.createOffer);
+  for (let i in config) {
+    if (peer[i]) peer[i] = config[i];
+  }
   return peer;
 };
