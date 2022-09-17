@@ -1,15 +1,17 @@
+type Tstate = { base: any, copy: any }
+type Tproduce = <T = any>(baseState: T, recipe: (draft: T) => any) => T
 const keyForState = Symbol('key-for-state');
-type state = { base: any, copy: any }
+
 
 const createProxy = (value: any): any => {
-  const state: state = { base: value, copy: null }
+  const state: Tstate = { base: value, copy: null }
   const proxy = new Proxy(state, {
-    set(state: state, prop: string, v: any) {
+    set(state: Tstate, prop: string, v: any) {
       state.copy = state.copy ?? { ...state.base };
       state.copy[prop] = v;
       return true;
     },
-    get(state: state, prop: string | symbol) {
+    get(state: Tstate, prop: string | symbol) {
       if (prop === keyForState) return state;
       state.copy = state.copy ?? { ...state.base };
       return (state.copy[prop] = createProxy(state.copy[prop]));
@@ -30,7 +32,7 @@ const readresult = (draft: any) => {
   return state.copy;
 }
 
-const produce: <T = any>(baseState: T, recipe: (draft: T) => any) => T = (baseState, recipe) => {
+const produce: Tproduce = (baseState, recipe) => {
   const proxy = createProxy(baseState);
   recipe(proxy);
   return readresult(proxy);
