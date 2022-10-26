@@ -1,6 +1,6 @@
-# 实现一个rxjs（1）🎅
+# 实现一个rxjs（Observable）🎅
 
-![image.webp](https://raw.githubusercontent.com/blazer233/algorithm-learn/main/npm-learn/fsm/stately/image.webp)
+![image.webp](https://raw.githubusercontent.com/blazer233/algorithm-learn/main/rx-xstate/rx/title.webp)
 
 > 项目代码：https://github.com/blazer233/algorithm-learn/tree/main/rx-xstate/rx
 >
@@ -20,7 +20,7 @@
 
 通过伪代码，实现一个简单的滚动下拉加载：
 
-![image.webp](https://raw.githubusercontent.com/blazer233/algorithm-learn/main/npm-learn/fsm/stately/image.webp)
+![image.webp](https://raw.githubusercontent.com/blazer233/algorithm-learn/main/rx-xstate/rx/2.png)
 
 上述代码，我们可以看出来几点问题:
 
@@ -30,7 +30,7 @@
 
 rxjs方式：
 
-![image.webp](https://raw.githubusercontent.com/blazer233/algorithm-learn/main/npm-learn/fsm/stately/image.webp)
+![image.webp](https://raw.githubusercontent.com/blazer233/algorithm-learn/main/rx-xstate/rx/1.png)
 
 配合操作符（`operator`），提高了每一步操作的可读性，将事件转换成（`Observable`）通过流的方式进行监听并处理，并且在处理业务逻辑时，可以将每一步拆成更小的函数，通过更多的`operator`连接，提高业务代码的复用性和可读性，这也是`RxJS`的精髓所在。
 
@@ -120,7 +120,7 @@ export class Observable {
 在如上代码里 new 实例化`Observable`对象，其传入参数对内部方法`_subscribe`进行了重写，之后在调用`subscribe`时，将订阅函数转编为`Subscriber`的实例对象
 
 此时就有小伙伴纳闷了，`Subscriber`是个什么鬼？？？
-![image.webp](https://raw.githubusercontent.com/blazer233/algorithm-learn/main/npm-learn/fsm/stately/image.webp)
+![image.webp](https://raw.githubusercontent.com/blazer233/algorithm-learn/main/rx-xstate/rx/wen.png)
 
 我们这里先关注`Observable`的实现，不要急哈，subscibe方法接受三个可选参数，如下图（也可点击源码链接查看）
 
@@ -141,7 +141,9 @@ subscribe方法真正需要的是`Subscriber`实例对象，所以一开始调�
 
 #### SafeSubscriber
 
-`SafeSubscriber`简单继承于 `Subscriber`，而`Subscriber`方法也是对入参`observerOrNext`进行了又一层封装，本质还是继承了`Subscription`方法，add、unsubscribe等核心方法最终是挂载在`Subscription`上（稍后看）
+`SafeSubscriber`简单继承于 `Subscriber`，而`Subscriber`方法也是对入参`observerOrNext`进行了又一层封装，本质还是继承了`Subscription`方法，add、unsubscribe等核心方法最终是挂载在`Subscription`上
+
+稍后看，不要急哈![image.webp](https://raw.githubusercontent.com/blazer233/algorithm-learn/main/rx-xstate/rx/fo.png)
 
 ```js
 export class SafeSubscriber extends Subscriber {
