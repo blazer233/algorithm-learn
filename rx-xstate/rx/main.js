@@ -1,7 +1,9 @@
-import { Observable } from "./core/Observable";
+// import { Observable } from "./core/Observable";
 import { from } from "./observable/from";
 import { map } from "./operate/map";
 import { take } from "./operate/take";
+import { Observable } from "./core/other";
+
 // Create a lazy Push System
 
 const observable = new Observable(subscriber => {
@@ -9,9 +11,7 @@ const observable = new Observable(subscriber => {
   subscriber.next(2);
   subscriber.next(3);
   subscriber.complete();
-  // return () => {
-  //   console.log(11111111);
-  // };
+  return () => console.log("succes");
 });
 const pseudoSubscriber = {
   next: value => console.log("we got", value),
