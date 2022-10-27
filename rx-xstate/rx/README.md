@@ -18,7 +18,7 @@
 
 ### 举个例子：
 
-通过伪代码，实现一个业务中常见的滚动下拉加载：
+通过伪代码，实现一个业务中常见的滚动**下拉加载**：
 ##### 普通：
 
 ![image.webp](https://raw.githubusercontent.com/blazer233/algorithm-learn/main/rx-xstate/rx/2.png)
