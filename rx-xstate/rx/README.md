@@ -14,9 +14,9 @@
 
 针对 JavaScript 中的非阻塞行为（non-blocking manner），RxJS in Action（Deniels, P.P etc.）列举了 3 种处理方式，包括回调函数（callback functions）、事件派发器（Event Emitters）以及Promise。
 
-`RxJS` 则提出了一种新的思维方式：数据流，它通过`observable`序列来实现基于事件的编程，它使编写异步或基于回调的代码更容易。且代码量会有效减少，可读性的提高。本文通过挖掘精简rxjs源码，力求实现一个tiny版的rxjs，用简单的demo深入浅出理解rxjs的核心思想。
+`RxJS` 则提出了一种新的思维方式：数据流，它通过`observable`序列来实现基于事件的编程，它使编写异步或基于回调的代码更容易。且代码量会有效减少，可读性的提高。本文通过挖掘精简RxJS源码，力求实现一个tiny版的RxJS，用简单的demo深入浅出理解RxJS的核心思想。
 
-### 举个例子：
+## 举个例子：
 
 通过伪代码，实现一个业务中常见的滚动**下拉加载**：
 ##### 普通：
@@ -36,11 +36,12 @@
 RxJS配合操作符（`operator`），提高了每一步操作的可读性，将事件转换成（`Observable`）通过流的方式进行监听并处理，并且在处理业务逻辑时，**可以将每一步拆成更小的函数，通过更多的`operator`连接，提高业务代码的复用性和可读性**，这也是`RxJS`的精髓所在。
 
 
+
 接下来，我们首先来实现 RxJS 框架中核心的核心 —— **Observable**
 
 ---
 
-### Observable：
+## Observable：
 
 在我们实现的tony版RxJS中，需要跑通下面的Demo。
 
@@ -113,12 +114,12 @@ export class Observable {
 ```
 [点击查看对应源码](https://github.com/ReactiveX/rxjs/blob/master/src/internal/Observable.ts#L35)
 
-在如上代码里 new 实例化`Observable`对象，其传入参数对内部方法`_subscribe`进行了覆盖，之后在调用`subscribe`时，将`observable.subscribe({...})`传入的对象转化为`Subscriber`的实例对象，之后调用实例对象的`add`方法，将一开始`new Observable`时传入的方法执行，如果执行后返回为函数，则挂载到实例对象上，k销毁时执行。
+在如上代码里 new 实例化`Observable`对象，其传入参数对内部方法`_subscribe`进行了覆盖，之后在调用`subscribe`时，将`observable.subscribe({...})`传入的对象转化为`Subscriber`的实例对象，之后调用实例对象的`add`方法，将一开始`new Observable`时传入的方法执行，如果执行后返回为函数，则挂载到实例对象上，销毁时执行。
 
 此时就有小伙伴纳闷了，`SafeSubscriber`、`Subscriber`、`add方法`...这些都是啥？？？
 ![image.webp](https://raw.githubusercontent.com/blazer233/algorithm-learn/main/rx-xstate/rx/wen.png)
 
-我们先往下看，不要急，订阅时调用subscibe方法，接受三个可选参数，如下图
+我们先往下看，订阅时调用subscibe方法，接受三个可选参数，如下图
 
 ```js
 subscribe(
@@ -293,7 +294,7 @@ export class Subscription {
 ## 总结
 
 以上就是一个简单`Observable`的tiny版实现，其实很多也还没有讲，比如
-* 什么是操作符？
+* pipe是什么？
 * 操作符是如何链接的？
 * Subject是如何实现的？
 * ...
@@ -302,7 +303,7 @@ export class Subscription {
 
 手写一遍之后，可能会有一种感觉 "这不就是个观察者模式吗"，如果仅仅想实现功能，也会有更简版的实现，十几行就能完成。
 
-但是当我们深入源码，拆分代码，剥去外壳，去最终一步一步实现功能找到答案，这个过程才是我们应当所追求的
+但是当我们深入源码，拆分代码，剥去外壳，去最终一步一步实现功能找到答案，而这个过程才是我们应当所追求的
 
 毕竟 ***Programming Is Thinking Not Typing***。
 
@@ -310,6 +311,7 @@ export class Subscription {
 
 ---
 参考：
+  https://www.youtube.com/watch?v=BA1vSZwzkK8
   https://github.com/ReactiveX/rxjs/blob/master/src/internal/Observable.ts
   https://segmentfault.com/a/1190000041506612
   https://juejin.cn/post/6991021120031817765/#heading-5
