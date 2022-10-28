@@ -1,4 +1,4 @@
-# 【硬核解析】从源码实现一个rxjs（Observable篇）🎅
+# 【硬核拆解】从源码实现一个rxjs（Observable篇）
 
 ![image.webp](https://raw.githubusercontent.com/blazer233/algorithm-learn/main/rx-xstate/rx/title.webp)
 
@@ -86,7 +86,7 @@ observable.subscribe({
 
 在`RxJS`中，每一个函数都是一个 [lazy Pull](https://rxjs.dev/guide/observable) 系统，只有我们订阅 Observable，我们才可以拿到我们需要的数据，执行订阅的函数。
 
-#### 实现Observable
+#### Observable
 
 通过Demo，我们发现:
 
