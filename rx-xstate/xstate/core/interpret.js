@@ -16,33 +16,31 @@ function executeStateActions(state, context, event, eventData) {
 }
 
 class InterpretService {
-  constructor(machine, comInstance) {
+  constructor(machine) {
     this.state = machine.initialState;
     this.status = InterpreterStatus.NotStarted;
     this.machine = machine;
-    this.comInstance = comInstance;
   }
 
   start() {
     this.status = InterpreterStatus.Running;
-    executeStateActions(this.state, this.comInstance.data, INIT_EVENT);
+    executeStateActions(this.state, INIT_EVENT);
   }
 
   stop() {
     this.status = InterpreterStatus.Stopped;
     this.machine.dispose();
     this.machine = null;
-    this.comInstance = null;
   }
 
   send(event, eventData) {
     if (this.status !== InterpreterStatus.Running) return;
     this.state = this.machine.transition(this.state, event, eventData);
-    executeStateActions(this.state, this.comInstance.data, event, eventData);
+    executeStateActions(this.state, event, eventData);
     return this.state;
   }
 }
 
-export function interpret(machine, comInstance) {
-  return new InterpretService(machine, comInstance);
+export function interpret(machine) {
+  return new InterpretService(machine);
 }

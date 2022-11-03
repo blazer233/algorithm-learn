@@ -103,7 +103,6 @@ export default class StateMachine {
             .filter(item => item);
       const [nonAssignActions, nextContext, assigned] = handleActions(
         allActions,
-        this.comInstance.data,
         event,
         eventData
       );

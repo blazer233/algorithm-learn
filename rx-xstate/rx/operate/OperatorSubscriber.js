@@ -4,14 +4,9 @@ export function operate(init) {
   return source => {
     if (source && typeof source.lift == "function") {
       return source.lift(function (liftedSource) {
-        try {
-          return init(liftedSource, this);
-        } catch (err) {
-          this.error(err);
-        }
+        return init(liftedSource, this);
       });
     }
-    throw new TypeError("不能提升(lift)非Observable类型");
   };
 }
 export class OperatorSubscriber extends Subscriber {
@@ -20,30 +15,17 @@ export class OperatorSubscriber extends Subscriber {
     this.type = "operator";
     this.onFinalize = onFinalize;
     if (onNext) {
-      this._next = function (value, id) {
-        onNext(value, id);
-      };
+      this._next = onNext;
     } else {
       this._next = super._next;
     }
-
     if (onComplete) {
-      this._complete = function () {
-        try {
-          onComplete();
-        } finally {
-          this.unsubscribe();
-        }
-      };
+      this._complete = onComplete;
     }
   }
-
   unsubscribe() {
     const { closed } = this;
     super.unsubscribe();
     !closed && this.onFinalize?.();
-    if (!closed && typeof this.onFinalize == "function") {
-      this.onFinalize();
-    }
   }
 }

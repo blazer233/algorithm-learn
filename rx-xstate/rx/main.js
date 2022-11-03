@@ -1,8 +1,20 @@
 // import { Observable } from "./core/Observable";
-import { from } from "./observable/from";
-import { map } from "./operate/map";
-import { take } from "./operate/take";
-import { Observable } from "./core/other";
+// import { from } from "./observable/from";
+// import { fromEvent } from "./observable/event";
+// import { map } from "./operate/map";
+// import { take } from "./operate/take";
+// import { scan } from "./operate/scan";
+// import { Subject } from "./core/Subject";
+// import { switchMap } from "./operate/switchMap";
+// import { bindCallback } from "./observable/bindCallback";
+import {
+  Observable,
+  from,
+  take,
+  map,
+  fromEvent,
+  Subject,
+} from "./core/tiny/index";
 
 // Create a lazy Push System
 
@@ -22,13 +34,35 @@ const pseudoSubscriber = {
 const subscription = observable.subscribe(pseudoSubscriber);
 subscription.unsubscribe();
 
-// from([1, 2, 3, 4, 5])
-//   .pipe(
-//     take(4),
-//     map(arg => {
-//       arg += 1;
-//       return arg;
-//     })
-//   )
-//   .subscribe(console.log);
-// from("Hello World").subscribe(val => console.log(val));
+from("357911")
+  .pipe(
+    take(4),
+    map(arg => ++arg)
+    // scan((a, c) => [...a, c], [])
+  )
+  .subscribe(console.log);
+
+fromEvent(document, "click")
+  .pipe(
+    take(4),
+    map(({ target }) => ({ target }))
+  )
+  .subscribe(console.log);
+
+const source$ = new Subject();
+source$.subscribe(data => console.log(`Subject 订阅: ${data}`));
+source$
+  // .pipe(take(2))
+  .subscribe(data => console.log(`Subject take(2)订阅: ${data}`));
+
+source$.next(1);
+source$.next(2);
+source$.next(3);
+source$.subscribe(data => console.log(`Subject 只订阅第四次: ${data}`));
+source$.next(4);
+
+source$.complete();
+
+// const test = cb => cb(1);
+// let o$ = bindCallback(test);
+// o$().subscribe(console.log);

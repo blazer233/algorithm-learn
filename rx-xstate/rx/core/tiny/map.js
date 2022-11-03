@@ -1,4 +1,4 @@
-import { OperatorSubscriber, operate } from "./OperatorSubscriber";
+import { operate, OperatorSubscriber } from "./core";
 
 export function map(func) {
   return operate((source, subscriber) => {

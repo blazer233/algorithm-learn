@@ -17,7 +17,8 @@ export class Subscription {
     return empty;
   })();
 
-  constructor() {
+  constructor(initDispose) {
+    this.initDispose = initDispose;
     this.closed = false; // 是否已经取消订阅
     this._disposeFuncs = []; // 回收函数列表
   }
@@ -27,6 +28,9 @@ export class Subscription {
    */
   unsubscribe() {
     if (!this.closed) {
+      if (typeof this.initDispose == "function") {
+        this.initDispose();
+      }
       this.closed = true;
       this._disposeFuncs.forEach(i => execDispose(i));
     }

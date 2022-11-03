@@ -1,15 +1,12 @@
-import { startMachine } from "./core";
+import { createMachine, interpret } from "./xstate-fsm/core";
 
-const baseFSM = startMachine({
+const lightMachine = createMachine({
   id: "light",
-  // 初始化状态，绿灯
   initial: "green",
-  // 状态定义
   states: {
     green: {
       on: {
-        // 事件名称，如果触发 TIMRE 事件，直接转入 yellow 状态
-        TIMRE: "yellow",
+        TIMER: "yellow",
       },
     },
     yellow: {
@@ -24,6 +21,17 @@ const baseFSM = startMachine({
     },
   },
 });
-// 设置当前状态
-const currentState = "green";
-baseFSM.transition(currentState, "TIMER");
+const nextState = lightMachine.transition("green", "TIMER").value;
+console.log(nextState);
+
+const toggleMachine = createMachine({});
+
+const toggleService = interpret(toggleMachine).start();
+
+toggleService.subscribe(state => {
+  console.log(state.value);
+});
+
+toggleService.send("TOGGLE");
+toggleService.send("TOGGLE");
+toggleService.stop();

@@ -21,13 +21,6 @@ export function defaultErrorHandler(err) {
   throw err;
 }
 
-export function pipeFromArray(funcs) {
-  const len = funcs.length;
-  if (len == 0) return identity;
-  if (len == 1) return funcs[0];
-  return input => funcs.reduce((prev, fn) => fn(prev), input);
-}
-
 export const EMPTY_OBSERVER = {
   closed: true,
   next: noop,

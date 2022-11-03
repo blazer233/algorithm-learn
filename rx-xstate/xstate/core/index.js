@@ -8,7 +8,7 @@ import StateMachine from "./StateMachine.js";
  */
 export function startMachine(fsmConfig) {
   const machine = new StateMachine(fsmConfig, { data: fsmConfig.context });
-  const service = interpret(machine, { data: fsmConfig.context });
+  const service = interpret(machine);
   service.start();
   return service;
 }

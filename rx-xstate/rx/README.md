@@ -311,10 +311,11 @@ export class Subscription {
 
 ---
 参考：
-  https://www.youtube.com/watch?v=BA1vSZwzkK8
-  https://github.com/ReactiveX/rxjs/blob/master/src/internal/Observable.ts
-  https://segmentfault.com/a/1190000041506612
-  https://juejin.cn/post/6991021120031817765/#heading-5
-  https://juejin.cn/post/7036266380030640164
+
+-  https://www.youtube.com/watch?v=BA1vSZwzkK8
+-  https://github.com/ReactiveX/rxjs/blob/master/src/internal/Observable.ts
+-  https://segmentfault.com/a/1190000041506612
+-  https://juejin.cn/post/6991021120031817765/#heading-5
+-  https://juejin.cn/post/7036266380030640164
 
 以上就是 npm 包 [rxjs](https://github.com/ReactiveX/rxjs) 第一部分`Observable`的源码学习。

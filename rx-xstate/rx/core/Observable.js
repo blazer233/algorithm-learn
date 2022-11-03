@@ -1,4 +1,3 @@
-import { pipeFromArray } from "./util";
 import { Subscriber, SafeSubscriber } from "./Subscriber";
 export class Observable {
   source = null;
@@ -38,13 +37,8 @@ export class Observable {
     return this.subscribe(observerOrNext, error, complete);
   }
   pipe(...operations) {
-    const pipeFunc = pipeFromArray(operations);
-    return operations.length ? pipeFunc(this) : this;
-  }
-
-  valueOf() {
-    this.subscribe();
-    return this;
+    // debugger
+    return operations.reduce((prev, fn) => fn(prev), this);
   }
 }
 
