@@ -34,18 +34,12 @@ const pseudoSubscriber = {
 const subscription = observable.subscribe(pseudoSubscriber);
 subscription.unsubscribe();
 
-from("357911")
-  .pipe(
-    take(4),
-    map(arg => ++arg)
-    // scan((a, c) => [...a, c], [])
-  )
-  .subscribe(console.log);
+from("357911").subscribe(console.log);
 
 fromEvent(document, "click")
   .pipe(
     take(4),
-    map(({ target }) => ({ target }))
+    map(({ type }) => ({ type }))
   )
   .subscribe(console.log);
 

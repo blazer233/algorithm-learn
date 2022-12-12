@@ -31,14 +31,18 @@ const request2 = (arg, t = 1000) => new Promise(res => setTimeout(res, t, arg));
 
 let idArray = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 const asyncPool = async (arr, iteratorFn = request, limit = 3) => {
-  let exec = new Set();
-  for (let i of arr) {
-    const task = iteratorFn(i);
-    exec.add(task);
-    task.finally(() => exec.delete(task));
-    if (exec.size >= limit) {
-      await Promise.race(exec);
+  try {
+    let exec = new Set();
+    for (let i of arr) {
+      const task = iteratorFn(i);
+      exec.add(task);
+      task.finally(() => exec.delete(task));
+      if (exec.size >= limit) {
+        await Promise.race(exec);
+      }
     }
+  } catch (e) {
+    console.error(e);
   }
 };
 asyncPool(idArray, request1, 3);
@@ -52,19 +56,15 @@ const Scheduler2 = (ajax = request2, limit = 3) => {
     if (!queue.length || idx == limit) return;
     const [param, reslove, reject] = queue.shift();
     idx += 1;
-    ajax(param)
-      .then(reslove)
-      .catch(reject)
-      .finally(() => {
-        idx -= 1;
-        run();
-      });
-  };
-  return arg =>
-    new Promise((res, rej) => {
-      queue.push([arg, res, rej]);
+    ajax(param).then(reslove).catch(reject).finally(() => {
+      idx -= 1;
       run();
     });
+  };
+  return arg => new Promise((res, rej) => {
+    queue.push([arg, res, rej]);
+    run();
+  });
 };
 const createPromise = Scheduler2();
 createPromise(1).then(res => console.log(res));
@@ -90,20 +90,16 @@ class Scheduler {
     if (!this.queue.length || this.idx >= this.limit) return;
     const [task, resolve, reject] = this.queue.shift();
     this.idx++;
-    task()
-      .then(resolve)
-      .catch(reject)
-      .finally(() => {
-        this.idx--;
-        this.run();
-      });
+    task().then(resolve).catch(reject).finally(() => {
+      this.idx--;
+      this.run();
+    });
   }
 }
 const scheduler = new Scheduler();
 const addTask = (time, order) => {
   scheduler.add(() => request2(time).then(() => console.log(order)));
 };
-
 addTask(1000, "1");
 addTask(500, "2");
 addTask(300, "3");
