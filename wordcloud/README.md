@@ -5,7 +5,13 @@
 在小程序开发的时候，遇到一个需要展示词云的模块
 ![](https://raw.githubusercontent.com/blazer233/algorithm-learn/main/npm-learn/img.png)
 
-第一反应是去 `npm` 搜一下有没有对应的库可以用，`echarts-wordcloud` 、`wordcloud2` 都可以实现想要的效果，但是小程序毕竟容量有限，而且我们只想实现的词云功能又比较简单，为了仅仅一个模块的功能引入一整个npm包，显得有些杀鸡用牛刀，于是网上找了找资料，自己一点点探索实现了一个简单的词云功能，并且在功能实现的基础上又对其进行了优化。
+第一反应是去 `npm` 搜一下有没有对应的库可以用，`echarts-wordcloud` 、`wordcloud2` 都可以实现想要的效果，但是小程序毕竟容量有限，而且我们只想实现的词云功能又比较简单，为了仅仅一个模块的功能引入一整个npm包，显得有些杀鸡用牛刀，于是第一时间扒下 `wordcloud2` 源码，瞅瞅是怎么实现的，能不能搞个差不多的于是：
+
+![](https://raw.githubusercontent.com/blazer233/algorithm-learn/main/npm-learn/img.png)
+
+这四层while循环，看的我是一脸懵逼
+
+最后还是网上找了找资料，自己一点点探索实现了一个简单的词云功能，并且在功能实现的基础上又对其进行了优化。
 
 ### 布局
 
@@ -14,6 +20,8 @@
 - 以中心为起始点，逐渐以环形向外围扩展，文字由大到小从中间到外围权重逐渐递减，形成一个椭圆形的效果。
 
 这么讲可能一脸懵，但是换个方式表述，也就是将文字按照 `权重\大小` 的方式按照顺序排序，那么这种顺序是什么呢
+
+![](https://raw.githubusercontent.com/blazer233/algorithm-learn/main/npm-learn/img.png)
 
 ![](https://raw.githubusercontent.com/blazer233/algorithm-learn/main/npm-learn/img.png)
 
@@ -37,7 +45,10 @@ export const archimedeanSpiral = (size, tmp = { step = 0.1, b = 1, a = 0 }) => {
   };
 };
 
+```
 
+
+```js
 /**
  * 计算所有螺线点
  * @param {*} size 画布大小
@@ -72,7 +83,9 @@ export const getAllPoints = (size) => {
 
 ### 碰撞
 
-布局似乎是成功了，但是当我们放入文字之后，另一个问题就出现了，因为没有考虑文字碰撞的问题，越是中心的文字越会叠在一起
+布局似乎是成功了，但是当我们放入文字之后，另一个问题就出现了
+
+因为没有考虑文字碰撞的问题，越是中心的文字越会叠在一起
 
 对于两个文字是否碰撞，有如下的判断条件：
 
@@ -190,6 +203,8 @@ export default function handleItem(ctx, points, baseData, i, isArea) {
 
 在早期，`react` 团队采用的是 `requestAnimationFrame` 和`postMessage` 来模拟实现的 `requestidlecallback` ，但是为了提高性能和电池寿命，因此在大多数浏览器里，当 `requestAnimationFrame` 运行在后台标签页或者隐藏的 `<iframe>` 里时，`requestAnimationFrame` 会被暂停调用以提升性能和电池寿命。并且它的调用时机是在渲染之前，但这个时机不稳定，所以这个api也是不稳定的。
 
+![](https://raw.githubusercontent.com/blazer233/algorithm-learn/main/npm-learn/img.png)
+
 在 `v16.2.0` 之后，`react` 团队采用的是 `MessageChannel` 的方式进行调用，`React` 把更新操作做成了一个个任务，塞进了 `taskQueue`，也就是任务列表，如果直接遍历执行这个任务列表，纯同步操作，执行期间，浏览器无法响应动画或者用户的输入，于是借助  `MessageChannel` ，依然是遍历执行任务，但当每个任务执行完，就会判断过了多久，如果没有过默认的切片时间（5ms），那就再执行一个任务，如果过了，那就调用 `postMessage`，让出线程，等浏览器处理完动画或者用户输入，就会执行 `onmessage` 推入的任务，接着遍历执行任务列表。
 
 ![](https://raw.githubusercontent.com/blazer233/algorithm-learn/main/npm-learn/img.png)
@@ -243,7 +258,8 @@ export default handle => {
   };
 };
 ```
-此时再看我们的火焰图，
+此时再看我们的火焰图，每次执行的 `handleItem` 被打断在 `MessageChannel` 中，一旦超过既定时间就会让出主线程，在下一个 `MessageChannel` 继续执行
+![](https://raw.githubusercontent.com/blazer233/algorithm-learn/main/npm-learn/img.png)
 
 
 
