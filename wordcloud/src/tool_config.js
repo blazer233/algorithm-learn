@@ -118,41 +118,32 @@ export const outLineTest = (point, size) => {
  */
 export const CANVAS_SIZE = [1500, 1500];
 const size = [
-  { fontSize: 30, color: "red" },
-  { fontSize: 32, color: "blue" },
+  { fontSize: 32, color: "burlywood" },
   { fontSize: 36, color: "gray" },
-  { fontSize: 41, color: "pink" },
   { fontSize: 55, color: "peru" },
-  { fontSize: 60, color: "black" },
+  { fontSize: 60, color: "cadetblue" },
 ];
-const areas = [
-  "苏州",
-  "佛山",
-  "长沙",
-  "天津",
-  "武汉",
-  "重庆",
-  "西安",
-  "石家庄",
-  "杭州",
-  "惠州",
-  "广州",
-  "深圳",
-  "上海",
-  "北京",
-  "徐州",
-  "海口",
-  "秦皇岛",
-  "苏州",
-  "佛山",
-  "长沙",
-  "天津",
-  "武汉",
+const foods = [
+  "螺蛳粉",
+  "鸭血粉丝",
+  "甜不辣",
+  "重庆小面",
+  "肉夹馍",
+  "炸酱面",
+  "沙县小吃",
+  "烤冷面",
+  "臭豆腐",
+  "钵钵鸡",
+  "酸辣粉",
+  "冒菜",
+  "驴打滚",
+  "板栗",
+  "醪糟",
 ];
 
 function getData(res = []) {
   size.forEach(i => {
-    areas.forEach(text => {
+    foods.forEach(text => {
       res.push({ ...i, text });
     });
   });
