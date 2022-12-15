@@ -3,13 +3,13 @@
 ### 背景
 
 在小程序开发的时候，遇到一个需要展示词云的模块
-![](https://raw.githubusercontent.com/blazer233/algorithm-learn/main/npm-learn/img.png)
+![](https://raw.githubusercontent.com/blazer233/algorithm-learn/main/wordcloud/image/sjg.png)
 
 第一反应是去 `npm` 搜一下有没有对应的库可以用，`echarts-wordcloud` 、`wordcloud2` 都可以实现想要的效果，但是小程序毕竟容量有限，而且我们只想实现的词云功能又比较简单，为了仅仅一个模块的功能引入一整个npm包，显得有些杀鸡用牛刀，于是第一时间扒下 `wordcloud2` 源码，瞅瞅是怎么实现的，能不能搞个差不多的于是：
 
-![](https://raw.githubusercontent.com/blazer233/algorithm-learn/main/npm-learn/img.png)
+![](https://raw.githubusercontent.com/blazer233/algorithm-learn/main/wordcloud/image/wc2.png)
 
-这四层while循环，看的我是一脸懵逼
+这四层while循环，看的我是一脸懵逼...
 
 最后还是网上找了找资料，自己一点点探索实现了一个简单的词云功能，并且在功能实现的基础上又对其进行了优化。
 
@@ -21,9 +21,9 @@
 
 这么讲可能一脸懵，但是换个方式表述，也就是将文字按照 `权重\大小` 的方式按照顺序排序，那么这种顺序是什么呢
 
-![](https://raw.githubusercontent.com/blazer233/algorithm-learn/main/npm-learn/img.png)
+![](https://raw.githubusercontent.com/blazer233/algorithm-learn/main/wordcloud/image/iknow.png)
 
-![](https://raw.githubusercontent.com/blazer233/algorithm-learn/main/npm-learn/img.png)
+![](https://raw.githubusercontent.com/blazer233/algorithm-learn/main/wordcloud/image/wenxiang.png)
 
 蚊香！
 
@@ -47,6 +47,9 @@ export const archimedeanSpiral = (size, tmp = { step = 0.1, b = 1, a = 0 }) => {
 
 ```
 
+![](https://raw.githubusercontent.com/blazer233/algorithm-learn/main/wordcloud/image/ring.png)
+
+利用方程计算每个词汇的坐标并依次在canvas渲染出来
 
 ```js
 /**
@@ -77,19 +80,21 @@ export const getAllPoints = (size) => {
   return points;
 };
 ```
+![](https://raw.githubusercontent.com/blazer233/algorithm-learn/main/wordcloud/image/txt-ring.png)
 
-![](https://raw.githubusercontent.com/blazer233/algorithm-learn/main/npm-learn/img.png)
 
 
 ### 碰撞
 
 布局似乎是成功了，但是当我们放入文字之后，另一个问题就出现了
 
-因为没有考虑文字碰撞的问题，越是中心的文字越会叠在一起
+因为没有考虑文字碰撞的问题，越是中心的文字越会叠在一起：
+
+![](https://raw.githubusercontent.com/blazer233/algorithm-learn/main/wordcloud/image/pengzhaung-has.png)
 
 对于两个文字是否碰撞，有如下的判断条件：
 
-![](https://raw.githubusercontent.com/blazer233/algorithm-learn/main/npm-learn/img.png)
+![](https://raw.githubusercontent.com/blazer233/algorithm-learn/main/wordcloud/image/penzhuang.png)
 
 所以应该在每个盒子摆放的时候添加如下条件：
 
@@ -180,20 +185,20 @@ export default function handleItem(ctx, points, baseData, i, isArea) {
 
 在解决了布局和碰撞两个大问题之后，我们的需求已经做的差不多了，虽然是小程序的需求，这里我们用pc模拟演示一下
 
-![](https://raw.githubusercontent.com/blazer233/algorithm-learn/main/npm-learn/img.png)
+![](https://raw.githubusercontent.com/blazer233/algorithm-learn/main/wordcloud/image/ciyun-over.png)
 
 
 ### schedule
 
 代码的结果如上，但是有个问题，在渲染整个词云的时候，我们需要将每个坐标依次找到、渲染，尤其是在找的时候，我们需要对每次准备绘制的词汇与之前所有的词汇进行碰撞检测，这一点很耗时，当我们的词汇足够多的时候，这个查找时间也会成倍增长，如下是渲染100个词汇的火焰图，调用栈一直被 `handleItem` 占据，页面会出现白屏、卡顿的情况
 
-![](https://raw.githubusercontent.com/blazer233/algorithm-learn/main/npm-learn/img.png)
+![](https://raw.githubusercontent.com/blazer233/algorithm-learn/main/wordcloud/image/bef.png)
 
 这时候就需要引入异步分片来解决
 
 说到异步分片就不得不提 `react schedule` ，react 就是模拟出浏览器 `requestIdleCallback` 将任务切割成无数小任务，抢空闲时期的空闲时间分片执行
 
-![](https://raw.githubusercontent.com/blazer233/algorithm-learn/main/npm-learn/img.png)
+![](https://raw.githubusercontent.com/blazer233/algorithm-learn/main/wordcloud/image/fiber.gif)
 
 `react` 团队没有直接利用 `requestIdleCallback` 是因为这个api在各个版本的浏览器兼容性较差，其次，`requestIdleCallback` 并不是每一帧都会执行，它只会在浏览器空闲时间的时候进行执行，而这个 `空闲时间` 是不稳定的。
 
@@ -259,7 +264,8 @@ export default handle => {
 };
 ```
 此时再看我们的火焰图，每次执行的 `handleItem` 被打断在 `MessageChannel` 中，一旦超过既定时间就会让出主线程，在下一个 `MessageChannel` 继续执行
-![](https://raw.githubusercontent.com/blazer233/algorithm-learn/main/npm-learn/img.png)
+
+![](https://raw.githubusercontent.com/blazer233/algorithm-learn/main/wordcloud/image/youhua.png)
 
 
 

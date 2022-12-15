@@ -20,9 +20,10 @@ function paintSpiral(dom, config = CONFIG) {
   if (config.showSpiral) {
     drawSpiral(ctx, points, size);
   }
+  const lastOne = [];
   let _i = 0;
   while (_i < mock.length) {
-    handleItem(ctx, points, mock, _i, config.isArea);
+    handleItem(ctx, lastOne, points, mock, _i, config.isArea);
     _i++;
   }
 }
