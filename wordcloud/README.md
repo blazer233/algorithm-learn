@@ -7,13 +7,15 @@
 ## 背景
 
 在小程序开发的时候，遇到一个需要展示词云的模块
+
+
 ![](https://raw.githubusercontent.com/blazer233/algorithm-learn/main/wordcloud/image/sjg.png)
 
 第一反应是去 `npm` 搜一下有没有对应的库可以用，`echarts-wordcloud` 、`wordcloud2` 都可以实现想要的效果，但是小程序毕竟容量有限，而且我们只想实现的词云功能又比较简单，为了仅仅一个模块的功能引入一整个npm包，显得有些杀鸡用牛刀，于是第一时间扒下 `wordcloud2` 源码，瞅瞅是怎么实现的，能不能搞个差不多的于是：
 
 ![](https://raw.githubusercontent.com/blazer233/algorithm-learn/main/wordcloud/image/wc2.png#pic_center)
 
-这四层while循环，看的我是一脸懵逼...既然我们实现的并非复杂的词云，为什么不能自己搞一个呢
+这四层while循环，看的我是一脸懵逼...  既然我们实现的并非复杂的词云，为什么不能自己搞一个呢
 
 于是网上找了找资料，自己一点点探索实现了一个简单的词云功能，并且在功能实现的基础上又对其进行了优化。
 
@@ -23,10 +25,9 @@
 
 - 以中心为起始点，逐渐以环形向外围扩展，文字由大到小从中间到外围权重逐渐递减，形成一个椭圆形的效果。
 
-这么讲可能一脸懵，但是换个方式表述，也就是将文字按照 `权重\大小` 的方式按照顺序排序，那么这种顺序是什么呢
+这么讲可能一脸懵，但是换个方式表述，也就是将文字按照 `权重/大小` 的方式按照顺序排序，那么这种顺序是什么呢
 
 ![](https://raw.githubusercontent.com/blazer233/algorithm-learn/main/wordcloud/image/iknow.png)
-
 ![](https://raw.githubusercontent.com/blazer233/algorithm-learn/main/wordcloud/image/wenxiang.png#pic_right)
 
 **蚊香！**
@@ -84,23 +85,25 @@ export const getAllPoints = (size) => {
   return points;
 };
 ```
+
 ![](https://raw.githubusercontent.com/blazer233/algorithm-learn/main/wordcloud/image/txt-ring.png#pic_center)
 
 
 
 ## 碰撞
 
-布局似乎是成功了，但是当我们放入文字之后，另一个问题就出现了
-
-由于没有考虑文字碰撞的问题，越是中心的文字越会叠在一起：
+布局似乎是成功了，但是当我们放入文字之后，另一个问题就出现了，由于没有考虑文字碰撞的问题，越是中心的文字越会叠在一起
 
 ![](https://raw.githubusercontent.com/blazer233/algorithm-learn/main/wordcloud/image/pengzhaung-has.png#pic_center)
+
+碰撞，顾名思义，就是两个物体碰撞在了一起，眼睛是可以直观的观察到碰撞的发生。但对于前端实现，如何让 JavaScript 代码理解两个独立的“物体”（DOM）碰撞在一起呢。这就涉及到碰撞检测（或者叫边界检测）的问题了，好在此处我们默认将每个词汇都看作是一个个长方体，只需要简单的计算就可以解决
 
 对于两个文字是否碰撞，有如下的判断条件：
 
 ![](https://raw.githubusercontent.com/blazer233/algorithm-learn/main/wordcloud/image/penzhuang.png#pic_center)
 
-所以应该在每个盒子摆放的时候添加如下条件：
+
+所以应该在每个词汇进行绘制的时候进行如下检测：
 
 ```js
 /**
@@ -129,7 +132,7 @@ const hitTest = (obj = {}, obj2 = {}) => {
 };
 ```
 
-并且除了文字碰撞之外，还有碰壁的情况也要考虑在内
+并且除了文字碰撞之外，还有边缘碰壁的情况也要考虑在内
 
 ```js
 /**
@@ -180,14 +183,12 @@ export default function handleItem(ctx, hasDrawText, points, baseData, i, isArea
     point.y = point.y - point._height / 2;
   }
   hasDrawText.push(point);
-  // /*画文字*/
+  // /*渲染文字*/
   ctx.fillText(point.text, point.x, point.y + point._height);
-  // /*画框*/
-  isArea && ctx.strokeRect(point.x, point.y + 6, point._width, point._height);
 }
 ```
 
-在解决了布局和碰撞两个大问题之后，我们的需求已经做的差不多了，虽然是小程序的需求，这里我们用pc模拟演示一下
+在解决了布局和碰撞两个大问题之后，我们的需求已经做的差不多了，虽然是小程序的需求，这里我们可以用pc模拟演示一下
 
 ![](https://raw.githubusercontent.com/blazer233/algorithm-learn/main/wordcloud/image/ciyun-over.png#pic_center)
 
@@ -204,7 +205,7 @@ export default function handleItem(ctx, hasDrawText, points, baseData, i, isArea
 
 ![](https://raw.githubusercontent.com/blazer233/algorithm-learn/main/wordcloud/image/fiber.gif)
 
-`react` 团队没有直接利用 `requestIdleCallback` 是因为这个api在各个版本的浏览器兼容性较差，其次，`requestIdleCallback` 并不是每一帧都会执行，它只会在浏览器空闲时间的时候进行执行，而这个 `空闲时间` 是不稳定的，如果浏览器一直处于繁忙状态，导致接受的回调一直无法执行，我们虽然可以利用 `requestIdleCallback` 的第二个参数 `timeout` ,但是如果是因为timeout回调才得以执行的话，其实用户就有可能会感觉到明显卡顿了
+`react` 团队没有直接利用 `requestIdleCallback` 是因为这个 `requestIdleCallback` 在各个版本的浏览器兼容性较差，其次，`requestIdleCallback` 并不是每一帧都会执行，它只会在浏览器空闲时间的时候进行执行，而这个 `空闲时间` 是不稳定的，如果浏览器一直处于繁忙状态，导致接受的回调一直无法执行，我们虽然可以利用 `requestIdleCallback` 的第二个参数 `timeout` ,但是如果是因为timeout回调才得以执行的话，其实用户就有可能会感觉到明显卡顿了
 
 
 ![](https://raw.githubusercontent.com/blazer233/algorithm-learn/main/wordcloud/image/raf.png#pic_center)
@@ -221,7 +222,7 @@ export default function handleItem(ctx, hasDrawText, points, baseData, i, isArea
 
 在 `v16.2.0` 之后，`react` 团队采用的是 `MessageChannel` 的方式进行调用，`React` 把更新操作做成了一个个任务，塞进了 `taskQueue`，也就是任务列表，如果直接遍历执行这个任务列表，纯同步操作，执行期间，浏览器无法响应动画或者用户的输入，于是借助  `MessageChannel` ，依然是遍历执行任务，但当每个任务执行完，就会判断过了多久，如果没有过默认的切片时间（5ms），那就再执行一个任务，如果过了，那就调用 `postMessage`，让出线程，等浏览器处理完动画或者用户输入，就会执行 `onmessage` 推入的任务，接着遍历执行任务列表。
 
-[react scheduler](https://github.com/facebook/react/blob/v18.2.0/packages/scheduler/src/forks/Scheduler.js)
+[react scheduler 源码](https://github.com/facebook/react/blob/v18.2.0/packages/scheduler/src/forks/Scheduler.js)
 
 
 ## 改进
@@ -230,7 +231,7 @@ export default function handleItem(ctx, hasDrawText, points, baseData, i, isArea
 
 我们可设计一个利用 `MessageChannel` 调度任务的函数，可以将每次循环检测碰撞绘制词汇的执行函数即 `handleItem` 打断，并且将返回的结果通过 `Promise` 进行包装，而且如果渲染的时间过长，还可以中止渲染
 
-并且在计算渲染时，还可以通过返回的 `abort` 方法将绘制终止，对词云的绘制更加灵活
+并且在对词云处理时，还可以通过` 调度函数` 返回的 `abort` 方法将渲染终止，使词云的绘制更加灵活
 
 ```js
 /**
@@ -275,6 +276,7 @@ export default handle => {
   };
 };
 ```
+
 此时再看我们的火焰图，每次执行的 `handleItem` 被打断在 `MessageChannel` 中，一旦超过既定时间就会让出主线程，在下一个 `MessageChannel` 继续执行，就很完美
 
 ![](https://raw.githubusercontent.com/blazer233/algorithm-learn/main/wordcloud/image/youhua.png#pic_center)
@@ -282,6 +284,13 @@ export default handle => {
 ## 总结
 
 `React schedule` 出来很久了，也有很多文章介绍，但在业务中真正能用到的地方很少。实现一个异步调度器很容易，也没什么技术难点，但如果能助力到业务需求上，它的好处则不言而喻，即优化了用户体验，又夯实了自身技术一举两得。
+
+参考文章
+
+- 👋：[React 之 requestIdleCallback 来了解一下](https://juejin.cn/post/7166547963517337614)
+- 👋：[异步分片计算在腾讯文档的实践](https://zhuanlan.zhihu.com/p/570318956)
+- 👋：[如何实现一个词云](https://mp.weixin.qq.com/s/bOrqR7zvZLreBUS1mrNGVg)
+
 
 
 
