@@ -7,7 +7,7 @@
 ## 背景
 
 在小程序开发的时候，遇到一个需要展示词云的模块
-![](https://raw.githubusercontent.com/blazer233/algorithm-learn/main/wordcloud/image/sjg.png#pic_center)
+![](https://raw.githubusercontent.com/blazer233/algorithm-learn/main/wordcloud/image/sjg.png)
 
 第一反应是去 `npm` 搜一下有没有对应的库可以用，`echarts-wordcloud` 、`wordcloud2` 都可以实现想要的效果，但是小程序毕竟容量有限，而且我们只想实现的词云功能又比较简单，为了仅仅一个模块的功能引入一整个npm包，显得有些杀鸡用牛刀，于是第一时间扒下 `wordcloud2` 源码，瞅瞅是怎么实现的，能不能搞个差不多的于是：
 
