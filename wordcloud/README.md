@@ -2,6 +2,7 @@
 ![](https://raw.githubusercontent.com/blazer233/algorithm-learn/main/wordcloud/image/fm.png#pic_center)
 
 > 项目代码：https://github.com/blazer233/algorithm-learn/tree/main/wordcloud
+> 
 
 
 ## 背景
@@ -150,7 +151,14 @@ export const outLineTest = (point, size) => {
 
 每当绘制一个词汇时，都需要将待绘制词汇与之前排布完成的词汇依次进行碰撞检测，为什么要依次检测呢，只检测上一次绘制的词汇不行吗？这是不行的，因为词汇的字数是不可控的，有可能词汇超长，与上一个文字没有重叠但是与其他文字有重叠。
 
-如果在如上的检测中存在碰撞，则继续用螺线的下一个坐标去进行检测，直到检测通过，将词汇绘制到该坐标位置，相当于一种简单的 **指针算法**
+
+如果在如上的检测中存在碰撞，则继续用螺线上已绘制坐标的下一个待绘制的坐标点继续检测，如果该坐标放置文字时，依然会与排布好的文字发生碰撞的话，就继续寻找下一个坐标，直到检测通过，确定好当前的坐标，将待绘制的词汇渲染到该坐标位置。
+
+如图，顺着螺线的路径进行排布，依次放置每一个词汇
+
+![](https://raw.githubusercontent.com/blazer233/algorithm-learn/main/wordcloud/image/cs.png#pic_center)
+
+相当于一种简单的 **指针算法**
 
 ```js
 /**
