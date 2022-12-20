@@ -5,10 +5,11 @@ channel.port1.onmessage = workLoop;
 export const getCurrntTime = () => performance.now();
 let taskIdCounter = 0;
 
+const RUNTIME = 16;
 export const scheduleCallback = callback => {
   const currentTime = getCurrntTime();
   const timeout = -1;
-  const expirtationTime = currentTime - timeout;
+  const expirtationTime = currentTime + timeout;
   workMinHeap.insert({
     id: taskIdCounter++,
     callback,
@@ -20,12 +21,12 @@ export const scheduleCallback = callback => {
 };
 
 function workLoop() {
-  let currentTask = workMinHeap.peek();
-  while (currentTask) {
+  const currentTask = workMinHeap.peek();
+  do {
     const { callback } = currentTask;
-    currentTask.callback = null;
     callback();
     workMinHeap.pop();
     currentTask = workMinHeap.peek();
-  }
+  } while (workMinHeap.size() && performance.now() - prevTime < RUNTIME);
+  channel.port2.postMessage("");
 }

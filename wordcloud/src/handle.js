@@ -19,7 +19,7 @@ export default function handleItem(
   let point = baseData[i];
   ctx.fillStyle = point.color;
   ctx.font = point.fontSize + "px Arial";
-  point._width = ctx.measureText(point.text).width;
+  point.w = ctx.measureText(point.text).width;
   ctx.beginPath();
   if (hasDrawText.length) {
     let s = i;
@@ -32,12 +32,12 @@ export default function handleItem(
       s++;
     }
   } else {
-    point.x = point.x - point._width / 2;
-    point.y = point.y - point._height / 2;
+    point.x = point.x - point.w / 2;
+    point.y = point.y - point.h / 2;
   }
   hasDrawText.push(point);
   // /*画文字*/
-  ctx.fillText(point.text, point.x, point.y + point._height);
+  ctx.fillText(point.text, point.x, point.y + point.h);
   // /*画框*/
-  isArea && ctx.strokeRect(point.x, point.y + 6, point._width, point._height);
+  isArea && ctx.strokeRect(point.x, point.y + 6, point.w, point.h);
 }

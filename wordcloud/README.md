@@ -113,13 +113,13 @@ export const getAllPoints = (size) => {
  * @param {*} obj2 绘制的词汇2
  */
 const hitTest = (obj = {}, obj2 = {}) => {
-  var objW = obj._width; // 宽度
-  var objH = obj._height; // 高度
+  var objW = obj.w; // 宽度
+  var objH = obj.h; // 高度
   var objL = obj.x; //x 坐标
   var objT = obj.y; //y 坐标
 
-  var obj2W = obj2._width;
-  var obj2H = obj2._height;
+  var obj2W = obj2.w;
+  var obj2H = obj2.h;
   var obj2L = obj2.x;
   var obj2T = obj2.y;
   // true 没碰上
@@ -143,8 +143,8 @@ const hitTest = (obj = {}, obj2 = {}) => {
  */
 export const outLineTest = (point, size) => {
   return (
-    Number(point.x) + Number(point._width) > size[0] ||
-    Number(point.y) + Number(point._height) > size[1]
+    Number(point.x) + Number(point.w) > size[0] ||
+    Number(point.y) + Number(point.h) > size[1]
   );
 };
 ```
@@ -174,7 +174,7 @@ export default function handleItem(ctx, hasDrawText, points, baseData, i, isArea
   let point = baseData[i];
   ctx.fillStyle = point.color;
   ctx.font = point.fontSize + "px Arial";
-  point._width = ctx.measureText(point.text).width;
+  point.w = ctx.measureText(point.text).width;
   ctx.beginPath();
   if (hasDrawText.length) {
     let s = i;
@@ -187,12 +187,12 @@ export default function handleItem(ctx, hasDrawText, points, baseData, i, isArea
       s++; // 索引自增寻找可以通过检测的坐标
     }
   } else {
-    point.x = point.x - point._width / 2;
-    point.y = point.y - point._height / 2;
+    point.x = point.x - point.w / 2;
+    point.y = point.y - point.h / 2;
   }
   hasDrawText.push(point);
   // /*渲染文字*/
-  ctx.fillText(point.text, point.x, point.y + point._height);
+  ctx.fillText(point.text, point.x, point.y + point.h);
 }
 ```
 

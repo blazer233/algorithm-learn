@@ -84,13 +84,13 @@ export const drawSpiral = (ctx, points, size) => {
  * 碰撞测试
  */
 export const hitTest = (obj = {}, obj2) => {
-  var objW = obj._width;
-  var objH = obj._height;
+  var objW = obj.w;
+  var objH = obj.h;
   var objL = obj.x; //x
   var objT = obj.y; //y
 
-  var obj2W = obj2._width;
-  var obj2H = obj2._height;
+  var obj2W = obj2.w;
+  var obj2H = obj2.h;
   var obj2L = obj2.x;
   var obj2T = obj2.y;
   // true 没碰上
@@ -108,8 +108,8 @@ export const hitTest = (obj = {}, obj2) => {
  */
 export const outLineTest = (point, size) => {
   return (
-    Number(point.x) + Number(point._width) > size[0] ||
-    Number(point.y) + Number(point._height) > size[1]
+    Number(point.x) + Number(point.w) > size[0] ||
+    Number(point.y) + Number(point.h) > size[1]
   );
 };
 
