@@ -246,3 +246,9 @@ Deletion 时
 1. 对于 ClassComponent，他会通过 current === null?区分是 mount 还是 update，调用 componentDidMount 或 componentDidUpdate 。
 2. 触发状态更新的 this.setState 如果赋值了第二个参数回调函数，也会在此时调用。
 3. current Fiber 树切换
+
+
+在 React 项目启动时，React 会在 ReactDOM 挂载的根节点上绑定事件，做事件委托，自己模拟浏览器的事件流，实现一套 React 事件流。
+根节点绑定的通常是两个事件，一个用于模拟捕获阶段，一个模拟冒泡阶段。（但有些事件比较特别，是不能捕获冒和泡的，比如 scroll 事件，这种事件只会绑定一个事件模拟捕获阶段，且不支持事件委托）
+用户触发了 React 事件，这里假设为 mousedown 的冒泡阶段。前面绑定的函数通过事件委托拿到了原生事件名，以及目标元素。基于它们，先创建一个合成事件对象，再从 fiber 树中不停往根节点找，将这些 fiberNode 的 props 的 onMousedown 放到一个队列中。
+收集完毕后，我们根据当前是事件捕获还是冒泡阶段，选择方向去遍历同步执行。捕获阶段是从根节点到目标节点，冒泡则相反。另外，可以通过 event.stopPropagation() 阻止事件冒泡。

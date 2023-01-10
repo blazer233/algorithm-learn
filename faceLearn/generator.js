@@ -23,8 +23,8 @@ function* testG(arg) {
   return "success";
 }
 
-function asyncToGenerator(fn, ...arg) {
-  const gen = fn(...arg);
+function asyncToGenerator(fn) {
+  const gen = fn();
   return new Promise((resolve, reject) => {
     const step = (key = "next", arg) => {
       let generatorResult;
