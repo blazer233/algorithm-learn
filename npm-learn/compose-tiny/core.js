@@ -16,3 +16,5 @@ module.exports = {
     (...x) =>
       fns.reduceRight((e, o) => o.apply(null, [].concat(e)), x),
 };
+var a = ['a', 'b', 'c', 'd'];
+var b = ['b', 'c'];
