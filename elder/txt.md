@@ -17,7 +17,8 @@
 
 例：老年人首页布局和普通用户的首页布局也是不同的
 
-![image.png](https://raw.githubusercontent.com/blazer233/algorithm-learn/refs/heads/main/elder/1.png)
+![image.png](https://raw.githubusercontent.com/blazer233/algorithm-learn/refs/heads/main/elder/3.jpg)
+![image.png](https://raw.githubusercontent.com/blazer233/algorithm-learn/refs/heads/main/elder/4.jpg)
 
 
 其实，我们项目之始就引入了团队内部自研的原子css，并且我们有一整套css原子化方案
@@ -293,4 +294,6 @@ export const commonBehavior = Behavior({
       <view class="{{mainPageData.linerClass}} absolute w-100p t-0 h-360 l-0"></view>
         ...
 ```
+![image.png](https://raw.githubusercontent.com/blazer233/algorithm-learn/refs/heads/main/elder/1.gif)
+
 以上，感谢大家阅读，这套方案在业务中已经落地，为了便于描述和理解，以上代码均为业务代码抽离后的简单逻辑代码，当然还是有些不足和改进的地方，欢迎互相交流。
